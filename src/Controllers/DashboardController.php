@@ -17,10 +17,10 @@ class DashboardController
     public function read(): void
     {
         $baseDir = dirname(__DIR__, 2);
-		$src = $baseDir . '\src';
-		$userStorage = $baseDir . '\storage\Users';
-		$itemStorage = $baseDir . '\storage\Items';
-		$logStorage = $baseDir . '\storage\Logs';
+		$src = $baseDir . DIRECTORY_SEPARATOR . 'src';
+		$userStorage = $baseDir . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'Users';
+		$itemStorage = $baseDir . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'Items';
+		$logStorage = $baseDir . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'Logs';
 
 		$systemSize = $this->getDirectorySizeFlat($baseDir);
 		$systemSize = $systemSize + $this->getDirectorySizeRecursively($src);
