@@ -51,7 +51,7 @@ final class Bootstrap
 			$principal = Jwt::principal();
 
 			$log = [
-				'principal_id' => $principal->id,
+				'principal_id' => $principal === null ? null : $principal['id'],
 				'message' => $message,
 				'severity' => $severity,
 				'file' => $file,
@@ -81,7 +81,7 @@ final class Bootstrap
 			$principal = Jwt::principal();
 
 			$log = [
-				'principal_id' => $principal['id'],
+				'principal_id' => $principal === null ? null : $principal['id'],
 				'type' => get_class($exception),
 				'message' => $exception->getMessage(),
 				'file' => $exception->getFile(),
@@ -122,7 +122,7 @@ final class Bootstrap
 			$principal = Jwt::principal();
 
 			$log = [
-				'principal_id' => $principal['id'],
+				'principal_id' => $principal === null ? null : $principal['id'],
 				'error' => $error
 			];
 

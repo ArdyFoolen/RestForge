@@ -22,5 +22,5 @@ return [
 	
 	'timezone' => 'UTC',
 	
-	'storage_quota_bytes' => 5000000000
+	'storage_quota_bytes' => 1000000000
 ];

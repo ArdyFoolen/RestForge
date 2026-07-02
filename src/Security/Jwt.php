@@ -140,6 +140,10 @@ class Jwt
 
 		$token = Request::bearerToken();
 		
+		if ($token === null) {
+			return null;
+		}
+		
 		$parts = explode('.', $token);
 		
 		if (count($parts) !== 3) {

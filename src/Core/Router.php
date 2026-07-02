@@ -146,7 +146,7 @@ final class Router
 
 		$this->get('', function() {
 			Response::file(
-				__DIR__ . '/../resources/index.html',
+				__DIR__ . '/../Resources/index.html',
 				'text/html'
 			);
 		});
