@@ -7,6 +7,7 @@ namespace App\Controllers;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use FilesystemIterator;
+use DirectoryIterator;
 use App\Core\Response;
 use App\Core\Config;
 use App\Core\Version;
@@ -16,19 +17,18 @@ class DashboardController
     public function read(): void
     {
         $baseDir = dirname(__DIR__, 2);
-		$public = $baseDir . '\public';
 		$src = $baseDir . '\src';
 		$userStorage = $baseDir . '\storage\Users';
 		$itemStorage = $baseDir . '\storage\Items';
 		$logStorage = $baseDir . '\storage\Logs';
 
-		$systemSize = $this->getDirectorySize($public); // 702
-		$systemSize = $systemSize + $this->getDirectorySize($src); // 46117
+		$systemSize = $this->getDirectorySizeFlat($baseDir);
+		$systemSize = $systemSize + $this->getDirectorySizeRecursively($src);
 
-		$storageSize = $this->getDirectorySize($userStorage);
-		$storageSize = $storageSize + $this->getDirectorySize($itemStorage); // 
+		$storageSize = $this->getDirectorySizeRecursively($userStorage);
+		$storageSize = $storageSize + $this->getDirectorySizeRecursively($itemStorage);
 
-		$logSize = $this->getDirectorySize($logStorage);
+		$logSize = $this->getDirectorySizeRecursively($logStorage);
 
 		Response::success([
 			"systemSizeBytes" => $systemSize,
@@ -39,7 +39,7 @@ class DashboardController
 		]);
     }
 
-    private function getDirectorySize(string $directory): int
+    private function getDirectorySizeRecursively(string $directory): int
     {
         $size = 0;
 
@@ -50,6 +50,21 @@ class DashboardController
             ),
             RecursiveIteratorIterator::SELF_FIRST
         );
+
+        foreach ($iterator as $item) {
+            if ($item->isFile()) {
+                $size += $item->getSize();
+            }
+        }
+
+        return $size;
+    }
+
+    private function getDirectorySizeFlat(string $directory): int
+    {
+        $size = 0;
+
+        $iterator = new DirectoryIterator($directory);
 
         foreach ($iterator as $item) {
             if ($item->isFile()) {
