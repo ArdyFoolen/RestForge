@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Rest Framework</title>
+	<style>
+		body {
+			margin: 40px auto;
+			max-width: 1000px;
+			font-family: Arial, Helvetica, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			padding: 0 20px;
+			background: #fafafa;
+		}
+		
+		h1, h2, h3 {
+			color: #222;
+		}
+		
+		h1 {
+			border-bottom: 2px solid #ddd;
+			padding-bottom: 10px;
+		}
+		
+		section {
+			margin-bottom: 40px;
+		}
+		
+		code {
+			background: #eee;
+			padding: 2px 6px;
+			border-radius: 4px;
+		}
+		
+		pre {
+			background: #272822;
+			color: #f8f8f2;
+			padding: 16px;
+			overflow-x: auto;
+			border-radius: 6px;
+		}
+		
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		
+		table th,
+		table td {
+			border: 1px solid #ccc;
+			padding: 8px;
+			text-align: left;
+		}
+		
+		table th {
+			background: #eee;
+		}
+		
+		ul {
+			line-height: 1.8;
+		}
+		
+		footer {
+			margin-top: 60px;
+			padding-top: 20px;
+			border-top: 1px solid #ddd;
+			color: #666;
+			font-size: 0.9em;
+		}
+	</style>
+</head>
+<body>
+
+<h1>REST Framework</h1>
+
+<p>
+A lightweight REST framework backed by an encrypted JSON document database.
+</p>
+
+<section>
+
+<h2>Authentication</h2>
+
+<h3>Login</h3>
+
+<pre>POST /login
+
+{
+	"username": "admin",
+	"password": "password"
+}</pre>
+
+<h3>Current User</h3>
+
+<pre>GET /whoami
+
+Authorization: Bearer &lt;jwt-token&gt;</pre>
+
+</section>
+
+<section>
+
+<h2>Users</h2>
+
+<ul>
+<li><code>GET /api/users</code></li>
+<li><code>GET /api/user/{id}</code></li>
+<li><code>POST /api/user</code></li>
+<li><code>PUT /api/user/{id}</code></li>
+<li><code>PUT /api/user/password</code></li>
+<li><code>DELETE /api/user/{id}</code></li>
+</ul>
+
+</section>
+
+<section>
+
+<h2>Items</h2>
+
+<ul>
+<li><code>GET /api/items</code></li>
+<li><code>GET /api/item/{id}</code></li>
+<li><code>POST /api/item</code></li>
+<li><code>PUT /api/item/{id}</code></li>
+<li><code>DELETE /api/item/{id}</code></li>
+</ul>
+
+</section>
+
+<h2>Logs</h2>
+
+<ul>
+<li><code>GET /logs</code></li>
+<li><code>GET /log/{id}</code></li>
+<li><code>DELETE /log/{id}</code></li>
+</ul>
+
+</section>
+
+<section>
+
+<h2>Filtering</h2>
+
+<p>
+All filters are passed as query parameters.
+String comparisons are case-insensitive.
+Dates uses the ISO 8601 UTC format with a trailing <code>Z</code>.
+</p>
+
+<table>
+
+<tr>
+<th>Operator</th>
+<th>Syntax</th>
+<th>Example</th>
+</tr>
+
+<tr>
+<td>Equals</td>
+<td><code>field=value</code></td>
+<td><code>?name=John</code></td>
+</tr>
+
+<tr>
+<td>Not Equals</td>
+<td><code>field[not]=value</code></td>
+<td><code>?name[not]=John</code></td>
+</tr>
+
+<tr>
+<td>Greater Than</td>
+<td><code>field[gt]=value</code></td>
+<td><code>?price[gt]=100</code></td>
+</tr>
+
+<tr>
+<td>Greater Than or Equal</td>
+<td><code>field[ge]=value</code></td>
+<td><code>?price[ge]=100</code></td>
+</tr>
+
+<tr>
+<td>Less Than</td>
+<td><code>field[lt]=value</code></td>
+<td><code>?price[lt]=100</code></td>
+</tr>
+
+<tr>
+<td>Less Than or Equal</td>
+<td><code>field[le]=value</code></td>
+<td><code>?price[le]=100</code></td>
+</tr>
+
+<tr>
+<td>Contains</td>
+<td><code>field[contains]=value</code></td>
+<td><code>?name[contains]=Lap</code></td>
+</tr>
+
+<tr>
+<td>Starts With</td>
+<td><code>field[startswith]=value</code></td>
+<td><code>?name[startswith]=Lap</code></td>
+</tr>
+
+<tr>
+<td>Ends With</td>
+<td><code>field[endswith]=value</code></td>
+<td><code>?name[endswith]=top</code></td>
+</tr>
+
+<tr>
+<td>In</td>
+<td><code>field=v1,v2,v3</code></td>
+<td><code>?category=electronics,computers</code></td>
+</tr>
+
+<tr>
+<td>Nested Object</td>
+<td><code>parent[child]=value</code></td>
+<td><code>?customer[city]=London</code></td>
+</tr>
+
+<tr>
+<td>Array Contains</td>
+<td><code>field=[value]</code></td>
+<td><code>?role=[admin]</code></td>
+</tr>
+
+<tr>
+<td>Date Comparison</td>
+<td><code>field[gt]=yyyy-mm-ddThh:mm:ssZ</code></td>
+<td><code>?created_at=2026-06-30T08:40:53Z</code></td>
+</tr>
+
+</table>
+
+<h3>Examples</h3>
+
+<pre>?name=Laptop
+
+?price[gt]=100
+
+?price[gt]=100
+
+?price[ge]=100
+
+?price[lt]=1000
+
+?price[le]=1000
+
+?name[contains]=lap
+
+?name[startswith]=lap
+
+?name[endswith]=top
+
+?category=electronics,computers
+
+?customer[city]=London
+
+?tags=[electronics]
+
+?created_at[gt]=2026-06-30T08:40:53Z
+
+?created_at[ge]=2026-06-30T08:40:53Z
+
+?updated_at[lt]=2026-07-01T00:00:00Z</pre>
+
+<p>
+<strong>Note:</strong> Date filters should use UTC format <code>YYYY-MM-DDTHH-MM-SSZ</code>.
+Using <code>Z</code> avoids URL encoding issues with timezone offsets such as <code>+00:00</code>.
+</p>
+
+</section>
+
+<section>
+
+<h2>Sorting</h2>
+
+<pre>?orderby=name
+
+?orderby=price
+
+?descending=true</pre>
+
+</section>
+
+<section>
+
+<section>
+
+<h2>Pagination</h2>
+
+<pre>?offset=0
+
+?limit=25</pre>
+
+</section>
+
+<section>
+
+<h2>Http Status Codes</h2>
+
+<table>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+
+<tr><td>200</td><td>OK</td></tr>
+<tr><td>201</td><td>Created</td></tr>
+<tr><td>400</td><td>Bad Request</td></tr>
+<tr><td>401</td><td>Unauthorized</td></tr>
+<tr><td>403</td><td>Forbidden</td></tr>
+<tr><td>404</td><td>Not Found</td></tr>
+<tr><td>409</td><td>Conflict</td></tr>
+<tr><td>500</td><td>Internal Server Error</td></tr>
+
+</table>
+
+</section>
+
+<section>
+
+<h2>Response Format</h2>
+
+<h3>Success</h3>
+
+<pre>{
+	"success": true,
+	"data": [
+		...
+	]
+}</pre>
+
+<h3>Error</h3>
+
+<pre>{
+	"success": false,
+	"error": "..."
+}</pre>
+
+</section>
+
+<footer>
+
+REST Framework
+
+Version 1.0.0
+
+</footer>
+
+</body>
+</html>

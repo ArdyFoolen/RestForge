@@ -1,0 +1,12 @@
+#Net beans
+nbproject/
+
+#Local Test data
+storage/Logs/*.json
+!storage/Logs/.gitkeep
+
+storage/Users/*.json
+!storage/Users/.gitkeep
+
+storage/Items/*.json
+!storage/Items/.gitkeep

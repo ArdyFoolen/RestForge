@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Core;
+
+class Version
+{
+	public const VERSION = '1.0.0';
+	
+	public const NAME = 'REST Framework';
+	
+	public const API = 'v1';
+	
+	public const CODENAME = 'Genesis';
+}
