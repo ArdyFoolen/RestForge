@@ -1,4 +1,4 @@
-# SecureJsonApi
+# RestForge
 
 A lightweight REST API framework written in PHP that provides authentication, authorization, validation, filtering, JSON storage, and a clean routing system without requiring a database.
 
@@ -45,7 +45,7 @@ A lightweight REST API framework written in PHP that provides authentication, au
 Clone the repository:
 
 ```bash
-git clone https://github.com/<your-username>/SecureJsonApi.git
+git clone https://github.com/ArdyFoolen/RestForge.git
 ```
 
 Configure your web server so that the `public` directory is the document root.
