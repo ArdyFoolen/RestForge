@@ -46,6 +46,10 @@ class DashboardController
     {
         $size = 0;
 
+		if (!is_dir($directory)) {
+			return $size;
+		}
+
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator(
                 $directory,
@@ -66,6 +70,10 @@ class DashboardController
     private function getDirectorySizeFlat(string $directory): int
     {
         $size = 0;
+
+		if (!is_dir($directory)) {
+			return $size;
+		}
 
         $iterator = new DirectoryIterator($directory);
 

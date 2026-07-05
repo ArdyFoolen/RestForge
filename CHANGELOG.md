@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.3] - 2026-07-05
+
+### Fixed
+- Check in Dashboard if directory exists.
+
 ## [1.1.2] - 2026-07-05
 
 ### Fixed
