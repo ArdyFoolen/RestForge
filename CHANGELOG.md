@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2026-07-05
+
+### Fixed
+- Use same caps for folder names.
+
 ## [1.1.1] - 2026-07-02
 
 ### Fixed
