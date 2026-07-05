@@ -11,6 +11,9 @@ use DirectoryIterator;
 use App\Core\Response;
 use App\Core\Config;
 use App\Core\Version;
+use App\Controllers\UserController;
+use App\Controllers\ItemController;
+use App\Controllers\LogController;
 
 class DashboardController
 {
@@ -18,9 +21,9 @@ class DashboardController
     {
         $baseDir = dirname(__DIR__, 2);
 		$src = $baseDir . DIRECTORY_SEPARATOR . 'src';
-		$userStorage = $baseDir . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'Users';
-		$itemStorage = $baseDir . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'Items';
-		$logStorage = $baseDir . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'Logs';
+		$userStorage = $baseDir . DIRECTORY_SEPARATOR . 'Storage' . DIRECTORY_SEPARATOR . UserController::COLLECTION;
+		$itemStorage = $baseDir . DIRECTORY_SEPARATOR . 'Storage' . DIRECTORY_SEPARATOR . ItemController::COLLECTION;
+		$logStorage = $baseDir . DIRECTORY_SEPARATOR . 'Storage' . DIRECTORY_SEPARATOR . LogController::COLLECTION;
 
 		$systemSize = $this->getDirectorySizeFlat($baseDir);
 		$systemSize = $systemSize + $this->getDirectorySizeRecursively($src);

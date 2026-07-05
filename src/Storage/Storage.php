@@ -349,15 +349,10 @@ class Storage
 			return (float)$left <=> (float)$right;
 		}
 
-		// var_dump(['is_string($left): ' => is_string($left), "is_string($right): " => is_string($right),
-		 // "strtotime($left): " => strtotime($left), "strtotime($right): " => strtotime($right)]);
-
 		if (is_string($left) && is_string($right)) {
 
 			$leftTime = strtotime($left);
 			$rightTime = strtotime($right);
-
-			// var_dump(['Left: ' => $left, 'Right: ' => $right]);
 
 			// ISO-8601 date comparison
 			if ($leftTime !== false && $rightTime !== false) {
@@ -366,17 +361,6 @@ class Storage
 
 			return strcasecmp($left, $right);
 		}
-		
-		// if (is_string($left) && 
-			// is_string($right) && 
-			// strtotime($left) !== false && 
-			// strtotime($right) !== false) {
-				// return strtotime($left) <=> strtotime($right);
-		// }
-		
-		// if (is_string($left) && is_string($right)) {
-			// return strcasecmp($left, $right);
-		// }
 		
 		return $left <=> $right;
 	}

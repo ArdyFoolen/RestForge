@@ -11,7 +11,7 @@ use App\Core\ListOptions;
 
 class ItemController
 {
-	private const COLLECTION = 'items';
+	public const COLLECTION = 'items';
 	
 	public function create(): void
 	{
