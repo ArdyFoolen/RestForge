@@ -5,23 +5,27 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Controllers\UserController;
+use App\Controllers\SessionController;
 use App\Core\Config;
 use App\Core\Request;
+use App\Core\Response;
 use App\Storage\Storage;
 
 class Jwt
 {
 	private static ?array $principal = null;
+	private static ?string $sessionId = null;
 	
 	public static function clearCache(): void
 	{
 		self::$principal = null;
+		self::$sessionId = null;
 	}
 	
 	/*
 	 * Creates a JWT
 	*/
-	public static function create(string $subject): string
+	public static function create(string $subject, string $sessionId): string
 	{
 		$header = [
 			'alg' => 'HS256',
@@ -35,7 +39,8 @@ class Jwt
 			'iss' => Config::get('app_name'),
 			'iat' => $now,
 			'exp' => $now + Config::get('token_lifetime'),
-			'jti' => bin2hex(random_bytes(16))
+			'jti' => bin2hex(random_bytes(16)),
+			'sid' => $sessionId
 		];
 		
 		$headerEncoded = self::base64UrlEncode(
@@ -109,7 +114,8 @@ class Jwt
 			'iss',
 			'iat',
 			'exp',
-			'jti'
+			'jti',
+			'sid'
 		];
 		foreach ($required as $claim) {
 			if (!array_key_exists($claim, $decoded)) {
@@ -124,7 +130,15 @@ class Jwt
 		if (($decoded['iss'] ?? '') !== Config::get('app_name')) {
 			return null;
 		}
-		
+
+		$session = Storage::read(
+			SessionController::COLLECTION,
+			$decoded['sid']
+		);
+		if ($session === null || $session['revoked'] !== false) {
+			return null;
+		}
+
 		return $decoded;
 	}
 
@@ -178,6 +192,50 @@ class Jwt
 		self::$principal = $user;
 		
 		return self::$principal;
+	}
+	
+	/*
+	 * Session.
+	 * Returns the sessionid of the principal
+	*/
+	public static function sessionId(): ?string
+	{
+		if (self::$sessionId !== null) {
+			return self::$sessionId;
+		}
+
+		$token = Request::bearerToken();
+		
+		if ($token === null) {
+			return null;
+		}
+		
+		$parts = explode('.', $token);
+		
+		if (count($parts) !== 3) {
+			return null;
+		}
+		
+		[$header, $payload, $signature] = $parts;
+		
+		$decoded = json_decode(
+			self::base64UrlDecode($payload),
+			true
+		);
+		
+		if (!is_array($decoded)) {
+			return null;
+		}
+		
+		$sid = $decoded['sid'];
+		
+		if ($sid === null) {
+			Response::error('Invalid token', 401);
+		}
+		
+		self::$sessionId = $sid;
+		
+		return self::$sessionId;
 	}
 	
 	public static function sign(

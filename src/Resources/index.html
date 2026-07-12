@@ -88,9 +88,52 @@ A lightweight REST framework backed by an encrypted JSON document database.
 <pre>POST /login
 
 {
-	"username": "admin",
-	"password": "password"
+    "username": "admin",
+    "password": "password"
 }</pre>
+
+<pre>{
+    "success": true,
+    "data": {
+        "token": "&lt;jwt-token&gt;",
+        "refresh_token": "&lt;refresh-token&gt;",
+        "expires_in": 3600
+    }
+}</pre>
+
+<p>
+Returns a short-lived JWT access token and a rotating refresh token.
+</p>
+
+<h3>Refresh Token</h3>
+
+<pre>POST /refresh
+
+{
+    "refresh_token": "&lt;refresh-token&gt;"
+}</pre>
+
+<pre>{
+    "success": true,
+    "data": {
+        "token": "&lt;jwt-token&gt;",
+        "refresh_token": "&lt;refresh-token&gt;",
+        "expires_in": 3600
+    }
+}</pre>
+
+<p>
+Returns a new JWT access token and a new refresh token.
+Refresh tokens are rotated on every successful refresh.
+</p>
+
+<h3>Logout</h3>
+
+<pre>POST /logout</pre>
+
+<p>
+Revokes the current session and all associated refresh tokens.
+</p>
 
 <h3>Current User</h3>
 
@@ -112,6 +155,24 @@ Authorization: Bearer &lt;jwt-token&gt;</pre>
 <li><code>PUT /api/user/password</code></li>
 <li><code>DELETE /api/user/{id}</code></li>
 </ul>
+
+</section>
+
+<section>
+
+<h2>Sessions</h2>
+
+<ul>
+<li><code>GET /api/sessions</code></li>
+<li><code>GET /api/session/{id}</code></li>
+<li><code>PUT /api/session/{id}</code></li>
+<li><code>DELETE /api/session/{id}</code></li>
+</ul>
+
+<p>
+Sessions represent authenticated devices or browsers. Each session maintains
+its own rotating refresh token chain and can be revoked independently.
+</p>
 
 </section>
 
@@ -336,6 +397,12 @@ Using <code>Z</code> avoids URL encoding issues with timezone offsets such as <c
 	]
 }</pre>
 
+<p>
+Successful responses may return different HTTP status codes depending on the
+operation (for example <code>200 OK</code>, <code>201 Created</code> or
+<code>204 No Content</code>).
+</p>
+
 <h3>Error</h3>
 
 <pre>{
@@ -349,7 +416,7 @@ Using <code>Z</code> avoids URL encoding issues with timezone offsets such as <c
 
 REST Framework
 
-Version 1.0.0
+Version 1.2.0
 
 </footer>
 

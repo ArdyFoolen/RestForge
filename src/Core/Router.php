@@ -5,6 +5,7 @@ namespace App\Core;
 use App\Controllers\AuthController;
 use App\Controllers\ItemController;
 use App\Controllers\UserController;
+use App\Controllers\SessionController;
 use App\Controllers\DashboardController;
 use App\Controllers\LogController;
 use App\Security\AuthMiddleware;
@@ -103,10 +104,13 @@ final class Router
 		$authController = new AuthController();
 		$itemController = new ItemController();
 		$userController = new UserController();
+		$sessionController = new SessionController();
 		$dashboardController = new DashboardController();
 		$logController = new LogController();
 
 		$router->post('/login', [$authController, 'login']);
+		$router->post('/logout', [$authController, 'logout'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
+		$router->post('/refresh', [$authController, 'refresh']);
 
 		$router->post('/item', [$itemController, 'create'], [AuthMiddleware::class], [Permissions::ITEM_CREATE]);
 		$router->get('/items', [$itemController, 'list'], [AuthMiddleware::class], [Permissions::ITEM_READ]);
@@ -122,11 +126,16 @@ final class Router
 		$router->put('/user/password/{id}', [$userController, 'changePassword'], [AuthMiddleware::class], [Permissions::USER_UPDATE]);
 		$router->delete('/user/{id}', [$userController, 'delete'], [AuthMiddleware::class], [Permissions::USER_DELETE]);
 
+		$router->get('/sessions', [$sessionController, 'list'], [AuthMiddleware::class], [Permissions::SESSION_READ]);
+		$router->get('/session/{id}', [$sessionController, 'read'], [AuthMiddleware::class], [Permissions::SESSION_READ]);
+		$router->put('/session/{id}', [$sessionController, 'update'], [AuthMiddleware::class], [Permissions::SESSION_UPDATE]);
+		$router->delete('/session/{id}', [$sessionController, 'delete'], [AuthMiddleware::class], [Permissions::SESSION_DELETE]);
+
 		$router->get('/dashboard', [$dashboardController, 'read'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
 
-		$router->get('/logs', [$logController, 'list'], [AuthMiddleware::class], [Permissions::LOG_READ]);
-		$router->get('/log/{id}', [$logController, 'read'], [AuthMiddleware::class], [Permissions::LOG_READ]);
-		$router->delete('/log/{id}', [$logController, 'delete'], [AuthMiddleware::class], [Permissions::LOG_DELETE]);
+		$router->get('/logs', [$logController, 'list'], [AuthMiddleware::class], [Permissions::SESSION_READ]);
+		$router->get('/log/{id}', [$logController, 'read'], [AuthMiddleware::class], [Permissions::SESSION_READ]);
+		$router->delete('/log/{id}', [$logController, 'delete'], [AuthMiddleware::class], [Permissions::SESSION_DELETE]);
 	}
 	
 	private function registerRoutes(): void

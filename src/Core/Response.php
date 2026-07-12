@@ -14,13 +14,13 @@ class Response
 		
 		exit;
 	}
-	
-	public static function success(array $data = []): never
+
+	public static function success(array $data = [], int $status = 200): never
 	{
 		self::json([
 			'success' => true,
 			'data' => $data
-		]);
+		], $status);
 	}
 	
 	public static function error(string|array $message, int $status = 400): never

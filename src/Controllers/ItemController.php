@@ -23,9 +23,8 @@ class ItemController
 		);
 		
 		Response::success([
-			'id' => $id,
-			201
-		]);
+			'id' => $id
+		], 201);
 	}
 	
 	public function list(): void
@@ -76,9 +75,7 @@ class ItemController
 			);
 		}
 		
-		Response::success([
-			'updated' => $updated
-		]);
+		Response::success([], 204);
 	}
 
 	public function delete(string $id): void
@@ -95,9 +92,7 @@ class ItemController
 			);
 		}
 		
-		Response::success([
-			'deleted' => $deleted
-		]);
+		Response::success([], 204);
 	}
 }
 

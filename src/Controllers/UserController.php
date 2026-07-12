@@ -51,9 +51,8 @@ class UserController
 		);
 		
 		Response::success([
-			'id' => $id,
-			201
-		]);
+			'id' => $id
+		], 201);
 	}
 	
 	public function list(): void
@@ -215,10 +214,7 @@ class UserController
 			);
 		}
 		
-		Response::success([
-			'deleted' => $deleted,
-			204
-		]);
+		Response::success([], 204);
 	}
 	
 	private static function assertOwner(string $id, ?array $data = null): void

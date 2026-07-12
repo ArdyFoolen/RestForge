@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+# Changelog
+
+## [1.2.0] - 2026-07-12
+
+### Added
+
+* Added refresh token authentication with rotating refresh tokens.
+* Added session-based authentication model.
+* Added refresh token reuse detection to help identify compromised sessions.
+* Added automatic session invalidation when refresh token reuse is detected.
+* Added refresh token expiration.
+* Added refresh token hashing before storage.
+* Added `POST /auth/refresh` endpoint.
+* Added `POST /auth/logout` endpoint.
+* Added session management endpoints:
+
+  * `GET /sessions`
+  * `GET /sessions/{id}`
+  * `PUT /sessions/{id}`
+  * `DELETE /sessions/{id}`
+
+### Changed
+
+* Refresh tokens are now rotated on every successful refresh.
+* Session management now supports refresh token families.
+* `Response::success()` now accepts an optional HTTP status code.
+
+### Fixed
+
+* Improved authentication and session validation during token refresh.
+* Improved handling of revoked and expired refresh tokens.
+
 ## [1.1.3] - 2026-07-05
 
 ### Fixed

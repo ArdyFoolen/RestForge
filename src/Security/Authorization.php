@@ -17,6 +17,10 @@ final class Authorization
 			Permissions::USER_READ,
 			Permissions::USER_UPDATE,
 			Permissions::USER_DELETE,
+			
+			permissions::SESSION_READ,
+			permissions::SESSION_UPDATE,
+			permissions::SESSION_DELETE,
 
 			Permissions::ITEM_CREATE,
 			Permissions::ITEM_READ,
@@ -34,6 +38,10 @@ final class Authorization
 			Permissions::USER_READ,
 			Permissions::USER_UPDATE,
 			Permissions::USER_DELETE,
+			
+			permissions::SESSION_READ,
+			permissions::SESSION_UPDATE,
+			permissions::SESSION_DELETE,
 
 			Permissions::ITEM_CREATE,
 			Permissions::ITEM_READ,

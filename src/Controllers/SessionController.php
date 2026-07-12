@@ -9,13 +9,13 @@ use App\Core\Response;
 use App\Storage\Storage;
 use App\Core\ListOptions;
 
-class LogController
+class SessionController
 {
-	public const COLLECTION = 'logs';
+	public const COLLECTION = 'sessions';
 	
 	public function list(): void
 	{
-		$logs = Storage::list(
+		$sessions = Storage::list(
 			self::COLLECTION,
 			ListOptions::filters(),
 			ListOptions::orderBy(),
@@ -24,50 +24,68 @@ class LogController
 			ListOptions::limit()
 		);
 		
-		foreach ($logs as &$log) {
-			if ($log['principal_id'] !== null) {
+		foreach ($sessions as &$session) {
+			if ($session['user_id'] !== null) {
 				$user = Storage::read(
 					UserController::COLLECTION,
-					$log['principal_id']
+					$session['user_id']
 				);
 				
 				unset($user['password']);
 				
-				$log['principal'] = $user;
+				$session['user'] = $user;
 			}
 		}
 		
 		Response::success(
-			$logs
+			$sessions
 		);
 	}
 	
 	public function read(string $id): void
 	{
-		$log = Storage::read(
+		$session = Storage::read(
 			self::COLLECTION,
 			$id
 		);
 		
-		if ($log === null) {
+		if ($session === null) {
 			Response::error(
 				'Item not found',
 				404
 			);
 		}
 
-		if ($log['principal_id'] !== null) {
+		if ($session['user_id'] !== null) {
 			$user = Storage::read(
 				UserController::COLLECTION,
-				$log['principal_id']
+				$session['user_id']
 			);
 
 			unset($user['password']);
 
-			$log['principal'] = $user;
+			$session['user'] = $user;
 		}
 		
-		Response::success($log);
+		Response::success($session);
+	}
+
+	public function update(string $id): void
+	{
+		$updated = Storage::update(
+			self::COLLECTION,
+			$id,
+			Request::body()
+		);
+		
+		if (!$updated) {
+			Response::error(
+				'Item not found',
+				404
+			);
+		}
+		
+		Response::success([], 204);
 	}
 	
 	public function delete(string $id): void
