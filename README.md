@@ -28,6 +28,9 @@ A lightweight REST API framework written in PHP that provides authentication, au
 - HTML API documentation
 - Middleware support
 - API versioning (`/api/v1`)
+- JWT authentication with rotating refresh tokens
+- Session management
+- Refresh token reuse detection
 
 ---
 
@@ -54,6 +57,13 @@ Make sure the `Storage` directory is writable.
 
 ---
 
+# Documentation
+
+- API Documentation: `resources/index.html`
+- Changelog: [CHANGELOG.md](CHANGELOG.md)
+
+---
+
 # Default Owner Account
 
 When the framework starts and no owner account exists, it automatically creates one using the credentials configured in `Config.php`.
@@ -64,16 +74,36 @@ If the last owner is deleted, the default owner is recreated automatically.
 
 # Authentication
 
-Login:
+Authenticate using:
 
 ```http
 POST /api/v1/login
 ```
 
-Use the returned JWT:
+The response contains:
+
+- JWT access token
+- Refresh token
+- Access token lifetime
+
+Use the JWT access token for authenticated requests:
 
 ```http
 Authorization: Bearer <token>
+```
+
+When the access token expires, obtain a new one using:
+
+```http
+POST /api/v1/refresh
+```
+
+Refresh tokens are rotated after every successful refresh.
+
+Terminate a session using:
+
+```http
+POST /api/v1/logout
 ```
 
 ---
@@ -176,8 +206,11 @@ Descending:
 # Built-in Endpoints
 
 - Login
-- Change Password
+- Refresh
+- Logout
 - Who Am I
+- Sessions
+- Change Password
 - Users
 - Items
 - Dashboard
@@ -204,6 +237,7 @@ src/
 
 Storage/
     Users/
+	Sessions/
     Items/
     Logs/
 ```
@@ -215,8 +249,20 @@ Storage/
 Current version:
 
 ```
-v1.0.0
+v1.2.1
 ```
+
+---
+
+## What's New in v1.2.0
+
+- Rotating refresh token authentication
+- Session management API
+- Session revocation
+- Refresh token reuse detection
+- Custom HTTP status codes for successful responses
+
+See the [CHANGELOG.md](CHANGELOG.md) for the complete list of changes.
 
 ---
 

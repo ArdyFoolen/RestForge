@@ -12,6 +12,7 @@ use App\Core\Response;
 use App\Core\Config;
 use App\Core\Version;
 use App\Controllers\UserController;
+use App\Controllers\SessionController;
 use App\Controllers\ItemController;
 use App\Controllers\LogController;
 
@@ -22,6 +23,7 @@ class DashboardController
         $baseDir = dirname(__DIR__, 2);
 		$src = $baseDir . DIRECTORY_SEPARATOR . 'src';
 		$userStorage = $baseDir . DIRECTORY_SEPARATOR . 'Storage' . DIRECTORY_SEPARATOR . UserController::COLLECTION;
+		$sessionStorage = $baseDir . DIRECTORY_SEPARATOR . 'Storage' . DIRECTORY_SEPARATOR . SessionController::COLLECTION;
 		$itemStorage = $baseDir . DIRECTORY_SEPARATOR . 'Storage' . DIRECTORY_SEPARATOR . ItemController::COLLECTION;
 		$logStorage = $baseDir . DIRECTORY_SEPARATOR . 'Storage' . DIRECTORY_SEPARATOR . LogController::COLLECTION;
 
@@ -29,6 +31,7 @@ class DashboardController
 		$systemSize = $systemSize + $this->getDirectorySizeRecursively($src);
 
 		$storageSize = $this->getDirectorySizeRecursively($userStorage);
+		$storageSize = $storageSize + $this->getDirectorySizeRecursively($sessionStorage);
 		$storageSize = $storageSize + $this->getDirectorySizeRecursively($itemStorage);
 
 		$logSize = $this->getDirectorySizeRecursively($logStorage);
