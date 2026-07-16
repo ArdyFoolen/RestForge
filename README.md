@@ -249,7 +249,7 @@ Storage/
 Current version:
 
 ```
-v1.2.1
+v1.2.2
 ```
 
 ---

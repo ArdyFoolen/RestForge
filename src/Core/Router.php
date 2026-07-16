@@ -145,7 +145,7 @@ final class Router
 			$router->registerRoutesVersion1($router);
 		});
 
-		$this->get('/version', function() {
+		$this->get('/api/v1/version', function() {
 			Response::success([
 				'name' => Version::NAME,
 				'version' => Version::VERSION,
