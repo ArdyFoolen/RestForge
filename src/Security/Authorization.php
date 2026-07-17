@@ -17,6 +17,8 @@ final class Authorization
 			Permissions::USER_READ,
 			Permissions::USER_UPDATE,
 			Permissions::USER_DELETE,
+			Permissions::USER_PASSWORD_CHANGE,
+			Permissions::USER_RESET_PASSWORD,
 			
 			permissions::SESSION_READ,
 			permissions::SESSION_UPDATE,
@@ -38,6 +40,8 @@ final class Authorization
 			Permissions::USER_READ,
 			Permissions::USER_UPDATE,
 			Permissions::USER_DELETE,
+			permissions::USER_PASSWORD_CHANGE,
+			Permissions::USER_RESET_PASSWORD,
 			
 			permissions::SESSION_READ,
 			permissions::SESSION_UPDATE,
@@ -51,6 +55,8 @@ final class Authorization
 
 		Roles::USER => [
 			Permissions::AUTHENTICATED,
+
+			permissions::USER_PASSWORD_CHANGE,
 
 			Permissions::ITEM_CREATE,
 			Permissions::ITEM_READ,

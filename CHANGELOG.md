@@ -2,16 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
-# Changelog
+## [1.2.3] - 2026-07-17
+
+### Added
+
+* Added refresh password for admins to change the password.
+
+### Changed
+
+* Not allowed to disable one self.
+* Always create an enabled user.
+* Allow users to change their own password.
+
+### Fixed
+
+* Only allow update of password through password route.
 
 ## [1.2.2] - 2026-07-16
 
 ### Changed
+
 * Changed route of Version to be in api/v1.
 
 ## [1.2.1] - 2026-07-12
 
 ### Added
+
 * Added session to storage in dashboard.
 * Updated README.md
 

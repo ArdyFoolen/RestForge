@@ -123,7 +123,8 @@ final class Router
 		$router->get('/user/{id}', [$userController, 'read'], [AuthMiddleware::class], [Permissions::USER_READ]);
 		$router->get('/whoami', [$userController, 'whoAmI'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
 		$router->put('/user/{id}', [$userController, 'update'], [AuthMiddleware::class], [Permissions::USER_UPDATE]);
-		$router->put('/user/password/{id}', [$userController, 'changePassword'], [AuthMiddleware::class], [Permissions::USER_UPDATE]);
+		$router->put('/user/password/{id}', [$userController, 'changePassword'], [AuthMiddleware::class], [Permissions::USER_PASSWORD_CHANGE]);
+		$router->put('/user/resetpassword/{id}', [$userController, 'resetPassword'], [AuthMiddleware::class], [Permissions::USER_RESET_PASSWORD]);
 		$router->delete('/user/{id}', [$userController, 'delete'], [AuthMiddleware::class], [Permissions::USER_DELETE]);
 
 		$router->get('/sessions', [$sessionController, 'list'], [AuthMiddleware::class], [Permissions::SESSION_READ]);

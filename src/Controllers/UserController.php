@@ -43,7 +43,7 @@ class UserController
 		
 		$data['password'] = AuthController::hashPassword($data['password']);
 		$data['roles'] ??= ['user'];
-		$data['enabled'] ??= true;
+		$data['enabled'] = true;
 		
 		$id = Storage::create(
 			self::COLLECTION,
@@ -106,10 +106,17 @@ class UserController
 		Validator::roles($data);
 		Validator::boolean($data, 'enabled');
 		
-		if (!empty($data['password'])) {
-			
-			$data['password'] = AuthController::hashPassword($data['password']);
-			
+		if(isset($data['password'])) {
+			Response::error('Not allowed to change password', 403);
+		}
+		
+		$user = Storage::read(
+			self::COLLECTION,
+			$id
+		);
+
+		if ($user === null) {
+			Response::error('User does not exist.');
 		}
 		
 		if (isset($data['username'])) {
@@ -129,6 +136,9 @@ class UserController
 		}
 		
 		self::assertOwner($id, $data);
+		if ($data['enabled'] === false && $id === Jwt::principal()['id']) {
+			Response::error('Not allowed to disable one self.', 403);
+		}
 		
 		$updated = Storage::update(
 			self::COLLECTION,
@@ -174,8 +184,57 @@ class UserController
 			$id
 		);
 
+		if ($user === null) {
+			Response::error('User does not exist.');
+		}
+
+		if ($id !== Jwt::principal()['id']) {
+			Response::error('Not allowed to change someone elses password.', 403);
+		}
+
 		if (!AuthController::verifyPassword($data['oldpassword'], $user['password'])) {
 			Response::error('Old password is incorrect.');
+		}
+		
+		$user['password'] = AuthController::hashPassword($data['newpassword']);
+		
+		$updated = Storage::update(
+			self::COLLECTION,
+			$id,
+			$user
+		);
+		
+		if (!$updated) {
+			Response::error(
+				'Item not found',
+				404
+			);
+		}
+		
+		Response::success([
+			'updated' => $updated
+		]);
+	}
+	
+	public function resetPassword(string $id): void
+	{
+		$data = Request::body();
+		
+		Validator::required($data, [
+			'newpassword'
+		]);
+
+		Validator::string($data, 'newpassword');
+
+		Validator::minLength($data, 'password', 8);
+
+		$user = Storage::read(
+			self::COLLECTION,
+			$id
+		);
+
+		if ($user === null) {
+			Response::error('User does not exist');
 		}
 		
 		$user['password'] = AuthController::hashPassword($data['newpassword']);
