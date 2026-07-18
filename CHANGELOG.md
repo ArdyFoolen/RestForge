@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.4] - 2026-07-26
+
+### Added
+
+* Added route to delete array of sessions.
+
+### Fixed
+
+* Check if enabled is set.
+
+
 ## [1.2.3] - 2026-07-17
 
 ### Added

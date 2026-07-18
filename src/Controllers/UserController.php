@@ -136,7 +136,7 @@ class UserController
 		}
 		
 		self::assertOwner($id, $data);
-		if ($data['enabled'] === false && $id === Jwt::principal()['id']) {
+		if (isset($data['enabled']) && $data['enabled'] === false && $id === Jwt::principal()['id']) {
 			Response::error('Not allowed to disable one self.', 403);
 		}
 		

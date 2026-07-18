@@ -108,6 +108,43 @@ class Storage
 		return unlink($filename);
 	}
 	
+	public static function deleteArray(
+		string $collection,
+		array $ids,
+	): bool
+	{
+
+		$anyNotExist = false;
+		
+		foreach ($ids as $id) {
+			$filename = self::filename($collection, $id);
+			
+			if (!file_exists($filename)) {
+				$anyNotExist = true;
+				break;
+			}
+		}
+
+		if ($anyNotExist === true) {
+			return false;
+		}
+		
+		foreach ($ids as $id) {
+
+			$filename = self::filename($collection, $id);
+			
+			if (!file_exists($filename)) {
+				return false;
+			}
+			
+			if (!unlink($filename)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	public static function list(
 		string $collection,
 		array $filters = [],

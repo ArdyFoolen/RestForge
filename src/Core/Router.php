@@ -131,6 +131,7 @@ final class Router
 		$router->get('/session/{id}', [$sessionController, 'read'], [AuthMiddleware::class], [Permissions::SESSION_READ]);
 		$router->put('/session/{id}', [$sessionController, 'update'], [AuthMiddleware::class], [Permissions::SESSION_UPDATE]);
 		$router->delete('/session/{id}', [$sessionController, 'delete'], [AuthMiddleware::class], [Permissions::SESSION_DELETE]);
+		$router->delete('/sessions', [$sessionController, 'deleteArray'], [AuthMiddleware::class], [Permissions::SESSION_DELETE]);
 
 		$router->get('/dashboard', [$dashboardController, 'read'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
 

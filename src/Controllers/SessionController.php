@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Controllers\UserController;
+use App\Core\Request;
 use App\Core\Response;
 use App\Storage\Storage;
 use App\Core\ListOptions;
@@ -93,6 +94,25 @@ class SessionController
 		$deleted = Storage::delete(
 			self::COLLECTION,
 			$id
+		);
+		
+		if (!$deleted) {
+			Response::error(
+				'Item not found',
+				404
+			);
+		}
+		
+		Response::success([], 204);
+	}
+	
+	public function deleteArray(): void
+	{
+		$data = Request::body();
+
+		$deleted = Storage::deleteArray(
+			self::COLLECTION,
+			$data
 		);
 		
 		if (!$deleted) {
