@@ -26,7 +26,7 @@ final class Router
 	public static function dispatch(): void
 	{
 		$router = new self();
-		
+
 		$router->dispatchRequest();
 	}
 	
@@ -161,7 +161,6 @@ final class Router
 				'text/html'
 			);
 		});
-
 	}
 	
 	private function dispatchRequest(): void
@@ -180,6 +179,7 @@ final class Router
 			}
 
 			$routePath = trim($route['path'], '/');
+
 			$routeParts = $routePath === ''
 				? []
 				: explode('/', $routePath);
