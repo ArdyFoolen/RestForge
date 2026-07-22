@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Security\Permissions;
+use App\Security\Rrestrictions;
 use App\Security\Roles;
 
 final class Authorization
@@ -74,15 +75,33 @@ final class Authorization
 		]
 	];
 	
+	public static function  restrictionMessage(
+		array $principal,
+		?array $restrictions
+	): ?string
+	{
+		
+		foreach ($restrictions ?? [] as $restriction) {
+
+			if (
+				in_array(
+					$restriction,
+					$principal['restrictions'] ?? [],
+					true
+				)
+			) {
+				return Restrictions::restrictionMessage($restriction);
+			}
+		}
+		
+		return null;
+	}
+	
 	public static function allows(
 		array $principal,
 		array $permissions
 	): bool
 	{
-		
-		if (!$principal['enabled']) {
-			return false;
-		}
 		
 		foreach ($permissions as $permission) {
 
@@ -104,10 +123,10 @@ final class Authorization
 					$allowed = true;
 					break;
 				}
+			}
 				
-				if (!$allowed) {
-					return false;
-				}
+			if (!$allowed) {
+				return false;
 			}
 		}
 		

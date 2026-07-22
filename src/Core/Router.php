@@ -10,6 +10,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\LogController;
 use App\Security\AuthMiddleware;
 use App\Security\Permissions;
+use App\Security\Restrictions;
 use App\Core\Response;
 use App\Core\Version;
 
@@ -34,41 +35,45 @@ final class Router
 		string $path,
 		callable $handler,
 		array $middleware = [],
-		?array $permissions = null
+		?array $permissions = null,
+		?array $restrictions = null
 	): void
 	{
-		$this->addRoute('GET', $path, $handler, $middleware, $permissions);
+		$this->addRoute('GET', $path, $handler, $middleware, $permissions, $restrictions);
 	}
 	
 	public function post(
 		string $path,
 		callable $handler,
 		array $middleware = [],
-		?array $permissions = null
+		?array $permissions = null,
+		?array $restrictions = null
 	): void
 
 	{
-		$this->addRoute('POST', $path, $handler, $middleware, $permissions);
+		$this->addRoute('POST', $path, $handler, $middleware, $permissions, $restrictions);
 	}
 	
 	public function put(
 		string $path,
 		callable $handler,
 		array $middleware = [],
-		?array $permissions = null
+		?array $permissions = null,
+		?array $restrictions = null
 	): void
 	{
-		$this->addRoute('PUT', $path, $handler, $middleware, $permissions);
+		$this->addRoute('PUT', $path, $handler, $middleware, $permissions, $restrictions);
 	}
 	
 	public function delete(
 		string $path,
 		callable $handler,
 		array $middleware = [],
-		?array $permissions = null
+		?array $permissions = null,
+		?array $restrictions = null
 	): void
 	{
-		$this->addRoute('DELETE', $path, $handler, $middleware, $permissions);
+		$this->addRoute('DELETE', $path, $handler, $middleware, $permissions, $restrictions);
 	}
 	
 	private function group(string $prefix, callable $callback): void
@@ -87,7 +92,8 @@ final class Router
 		string $path,
 		callable $handler,
 		array $middleware = [],
-		?array $permissions = null
+		?array $permissions = null,
+		?array $restrictions = null
 	): void
 	{
 		$this->routes[] = [
@@ -95,7 +101,8 @@ final class Router
 			'path' => $this->prefix . $path,
 			'handler' => $handler,
 			'middleware' => $middleware,
-			'permissions' => $permissions
+			'permissions' => $permissions,
+			'restrictions' => $restrictions
 		];
 	}
 	
@@ -112,32 +119,32 @@ final class Router
 		$router->post('/logout', [$authController, 'logout'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
 		$router->post('/refresh', [$authController, 'refresh']);
 
-		$router->post('/item', [$itemController, 'create'], [AuthMiddleware::class], [Permissions::ITEM_CREATE]);
-		$router->get('/items', [$itemController, 'list'], [AuthMiddleware::class], [Permissions::ITEM_READ]);
-		$router->get('/item/{id}', [$itemController, 'read'], [AuthMiddleware::class], [Permissions::ITEM_READ]);
-		$router->put('/item/{id}', [$itemController, 'update'], [AuthMiddleware::class], [Permissions::ITEM_UPDATE]);
-		$router->delete('/item/{id}', [$itemController, 'delete'], [AuthMiddleware::class], [Permissions::ITEM_DELETE]);
+		$router->post('/item', [$itemController, 'create'], [AuthMiddleware::class], [Permissions::ITEM_CREATE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->get('/items', [$itemController, 'list'], [AuthMiddleware::class], [Permissions::ITEM_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->get('/item/{id}', [$itemController, 'read'], [AuthMiddleware::class], [Permissions::ITEM_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->put('/item/{id}', [$itemController, 'update'], [AuthMiddleware::class], [Permissions::ITEM_UPDATE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->delete('/item/{id}', [$itemController, 'delete'], [AuthMiddleware::class], [Permissions::ITEM_DELETE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 
-		$router->post('/user', [$userController, 'create'], [AuthMiddleware::class], [Permissions::USER_CREATE]);
-		$router->get('/users', [$userController, 'list'], [AuthMiddleware::class], [Permissions::USER_READ]);
-		$router->get('/user/{id}', [$userController, 'read'], [AuthMiddleware::class], [Permissions::USER_READ]);
+		$router->post('/user', [$userController, 'create'], [AuthMiddleware::class], [Permissions::USER_CREATE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->get('/users', [$userController, 'list'], [AuthMiddleware::class], [Permissions::USER_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->get('/user/{id}', [$userController, 'read'], [AuthMiddleware::class], [Permissions::USER_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 		$router->get('/whoami', [$userController, 'whoAmI'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
-		$router->put('/user/{id}', [$userController, 'update'], [AuthMiddleware::class], [Permissions::USER_UPDATE]);
+		$router->put('/user/{id}', [$userController, 'update'], [AuthMiddleware::class], [Permissions::USER_UPDATE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 		$router->put('/user/password/{id}', [$userController, 'changePassword'], [AuthMiddleware::class], [Permissions::USER_PASSWORD_CHANGE]);
-		$router->put('/user/resetpassword/{id}', [$userController, 'resetPassword'], [AuthMiddleware::class], [Permissions::USER_RESET_PASSWORD]);
-		$router->delete('/user/{id}', [$userController, 'delete'], [AuthMiddleware::class], [Permissions::USER_DELETE]);
+		$router->put('/user/resetpassword/{id}', [$userController, 'resetPassword'], [AuthMiddleware::class], [Permissions::USER_RESET_PASSWORD], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->delete('/user/{id}', [$userController, 'delete'], [AuthMiddleware::class], [Permissions::USER_DELETE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 
-		$router->get('/sessions', [$sessionController, 'list'], [AuthMiddleware::class], [Permissions::SESSION_READ]);
-		$router->get('/session/{id}', [$sessionController, 'read'], [AuthMiddleware::class], [Permissions::SESSION_READ]);
-		$router->put('/session/{id}', [$sessionController, 'update'], [AuthMiddleware::class], [Permissions::SESSION_UPDATE]);
-		$router->delete('/session/{id}', [$sessionController, 'delete'], [AuthMiddleware::class], [Permissions::SESSION_DELETE]);
-		$router->delete('/sessions', [$sessionController, 'deleteArray'], [AuthMiddleware::class], [Permissions::SESSION_DELETE]);
+		$router->get('/sessions', [$sessionController, 'list'], [AuthMiddleware::class], [Permissions::SESSION_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->get('/session/{id}', [$sessionController, 'read'], [AuthMiddleware::class], [Permissions::SESSION_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->put('/session/{id}', [$sessionController, 'update'], [AuthMiddleware::class], [Permissions::SESSION_UPDATE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->delete('/session/{id}', [$sessionController, 'delete'], [AuthMiddleware::class], [Permissions::SESSION_DELETE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->delete('/sessions', [$sessionController, 'deleteArray'], [AuthMiddleware::class], [Permissions::SESSION_DELETE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 
 		$router->get('/dashboard', [$dashboardController, 'read'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
 
-		$router->get('/logs', [$logController, 'list'], [AuthMiddleware::class], [Permissions::SESSION_READ]);
-		$router->get('/log/{id}', [$logController, 'read'], [AuthMiddleware::class], [Permissions::SESSION_READ]);
-		$router->delete('/log/{id}', [$logController, 'delete'], [AuthMiddleware::class], [Permissions::SESSION_DELETE]);
+		$router->get('/logs', [$logController, 'list'], [AuthMiddleware::class], [Permissions::SESSION_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->get('/log/{id}', [$logController, 'read'], [AuthMiddleware::class], [Permissions::SESSION_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->delete('/log/{id}', [$logController, 'delete'], [AuthMiddleware::class], [Permissions::SESSION_DELETE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 	}
 	
 	private function registerRoutes(): void

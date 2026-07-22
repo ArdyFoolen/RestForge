@@ -12,6 +12,7 @@ use App\Storage\Storage;
 use App\Core\ListOptions;
 use App\Security\Jwt;
 use App\Security\Roles;
+use App\Security\Restrictions;
 
 class UserController
 {
@@ -44,6 +45,10 @@ class UserController
 		$data['password'] = AuthController::hashPassword($data['password']);
 		$data['roles'] ??= ['user'];
 		$data['enabled'] = true;
+		$data['restrictions'] = array_unique(array_merge(
+			$data['restrictions'] ?? [],
+			[Restrictions::USER_PASSWORD_CHANGE_REQUIRED]
+		));
 		
 		$id = Storage::create(
 			self::COLLECTION,
@@ -197,7 +202,11 @@ class UserController
 		}
 		
 		$user['password'] = AuthController::hashPassword($data['newpassword']);
-		
+		$user['restrictions'] = array_values(array_filter(
+			$user['restrictions'] ?? [],
+			fn($restriction) => $restriction !== Restrictions::USER_PASSWORD_CHANGE_REQUIRED
+		));
+
 		$updated = Storage::update(
 			self::COLLECTION,
 			$id,

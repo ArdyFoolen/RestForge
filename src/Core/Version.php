@@ -6,7 +6,7 @@ namespace App\Core;
 
 class Version
 {
-	public const VERSION = '1.2.5';
+	public const VERSION = '1.3.0';
 	
 	public const NAME = 'JsonForge REST Framework';
 	

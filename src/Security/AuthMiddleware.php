@@ -19,7 +19,7 @@ final class AuthMiddleware
 		self::authenticate();
 		
 		if ($route['permissions'] !== null) {
-			self::authorize($route['permissions']);
+			self::authorize($route['permissions'], $route['restrictions']);
 		}
 
 	}
@@ -48,13 +48,22 @@ final class AuthMiddleware
 	/*
 	 * Authorize the current request for the current user
 	*/
-	public static function authorize(?array $permissions): void
+	public static function authorize(?array $permissions, ?array $restrictions): void
 	{
 		if ($permissions === null) {
 			return;
 		}
 		
 		$principal = Jwt::principal();
+				
+		if (!$principal['enabled']) {
+			Response::error('Forbidden', 403);
+		}
+
+		$message = Authorization::restrictionMessage($principal, $restrictions);
+		if ($message !== null) {
+			Response::error($message, 403);
+		}
 		
 		if (!Authorization::allows($principal, $permissions)) {
 			Response::error('Forbidden', 403);

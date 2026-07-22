@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-07-22
+
+### Added
+
+* Added Restrictions to route, and check if user has restrictions.
+* Added USER_PASSWORD_CHANGE_REQUIRED, add this restriction in Create user.
+* Remove USER_PASSWORD_CHANGE_REQUIRED, after changing password.
+
+### Fixed
+
+* Fix All permissions must be allowed in any Role NOT only in first Role.
+
 ## [1.2.5] - 2026-07-20
 
 ### Changed
