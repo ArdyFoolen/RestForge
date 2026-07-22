@@ -9,6 +9,9 @@ A lightweight REST API framework written in PHP that provides authentication, au
 - RESTful routing
 - JWT authentication
 - Role-based authorization
+- Permission-based access control
+- Temporary user restrictions
+- Password change enforcement
 - User management
 - Automatic owner account bootstrap
 - Password hashing
@@ -121,6 +124,45 @@ Current roles:
 Permissions are assigned to roles and checked through middleware.
 
 ---
+
+# Restrictions
+
+Restrictions are temporary conditions that override normal permissions.
+
+A user can have a valid role and permission but still be denied access when an
+active restriction applies.
+
+Current restrictions:
+
+| Restriction | Description |
+|---|---|
+| `user.password.change.required` | User must change their password before accessing restricted endpoints |
+
+## Password Change Required
+
+New users are created with the restriction:
+
+```text
+user.password.change.required
+```
+
+While this restriction is active:
+
+Protected endpoints are denied.
+The user can still authenticate.
+The password change endpoint remains accessible.
+The restriction is removed after a successful password change.
+
+Example response:
+```JSON
+{
+    "success": false,
+    "error": "Password change required."
+}
+```
+
+Restrictions are evaluated before permissions, meaning restrictions always take
+precedence over role permissions.
 
 # Query Language
 
@@ -249,10 +291,17 @@ Storage/
 Current version:
 
 ```
-v1.3.0
+v1.3.1
 ```
 
 ---
+
+## What's New in v1.3.0
+
+- Added user restrictions
+- Added password change required restriction
+- Added route-level restriction handling
+- Restrictions now override permissions
 
 ## What's New in v1.2.0
 

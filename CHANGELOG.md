@@ -2,13 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2026-07-22
+
+### Changed
+
+* Not allowed to reset own password. Use change password instead.
+* Updated index.html and ReadMe.md with 1.3.0 changes
+
 ## [1.3.0] - 2026-07-22
 
 ### Added
 
-* Added Restrictions to route, and check if user has restrictions.
-* Added USER_PASSWORD_CHANGE_REQUIRED, add this restriction in Create user.
-* Remove USER_PASSWORD_CHANGE_REQUIRED, after changing password.
+* Added user restrictions
+* Added password change required restriction
+* Added route-level restriction handling
+* Restrictions now override permissions
 
 ### Fixed
 

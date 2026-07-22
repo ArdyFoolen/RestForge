@@ -227,6 +227,11 @@ class UserController
 	
 	public function resetPassword(string $id): void
 	{
+
+		if ($id === Jwt::principal()['id']) {
+			Response::error('Not allowed to reset own password.', 403);
+		}
+
 		$data = Request::body();
 		
 		Validator::required($data, [

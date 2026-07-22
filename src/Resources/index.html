@@ -145,6 +145,57 @@ Authorization: Bearer &lt;jwt-token&gt;</pre>
 
 <section>
 
+<h2>Restrictions</h2>
+
+<p>
+Restrictions are temporary conditions applied to a user that override normal
+permissions. A user may have the required role and permission, but access will
+still be denied while an active restriction applies.
+</p>
+
+<table>
+
+<tr>
+<th>Restriction</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><code>user.password.change.required</code></td>
+<td>
+The user must change their password before accessing restricted endpoints.
+</td>
+</tr>
+
+</table>
+
+<h3>Password Change Required</h3>
+
+<p>
+When a user is created, the restriction
+<code>user.password.change.required</code> can be assigned automatically.
+The restriction remains active until the user successfully changes their
+password.
+</p>
+
+<p>
+Routes can define which restrictions block access. Routes that allow the
+password change flow remain accessible.
+</p>
+
+<p>
+When access is blocked, the API returns:
+</p>
+
+<pre>{
+    "success": false,
+    "error": "Password change required."
+}</pre>
+
+</section>
+
+<section>
+
 <h2>Users</h2>
 
 <ul>
@@ -416,7 +467,7 @@ operation (for example <code>200 OK</code>, <code>201 Created</code> or
 
 REST Framework
 
-Version 1.3.0
+Version 1.3.1
 
 </footer>
 
