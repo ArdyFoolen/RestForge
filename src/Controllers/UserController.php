@@ -246,6 +246,11 @@ class UserController
 			self::COLLECTION,
 			$id
 		);
+		
+		$user['restrictions'] = array_unique(array_merge(
+			$user['restrictions'] ?? [],
+			[Restrictions::USER_PASSWORD_CHANGE_REQUIRED]
+		));
 
 		if ($user === null) {
 			Response::error('User does not exist');

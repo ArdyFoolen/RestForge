@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2026-07-23
+
+### Added
+
+* Reset password route now requires change password.
+
 ## [1.3.1] - 2026-07-22
 
 ### Changed
