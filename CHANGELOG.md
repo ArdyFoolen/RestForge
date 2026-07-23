@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.3] - 2026-07-23
+
+### Changed
+
+* On POST user password is not required but optional.
+* If password not in request body it will be added from default Config setting.
+
 ## [1.3.2] - 2026-07-23
 
 ### Added

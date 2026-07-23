@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Controllers\Validator;
 use App\Controllers\AuthController;
+use App\Controllers\Validator;
+use App\Core\Config;
+use App\Core\ListOptions;
 use App\Core\Request;
 use App\Core\Response;
-use App\Storage\Storage;
-use App\Core\ListOptions;
 use App\Security\Jwt;
-use App\Security\Roles;
 use App\Security\Restrictions;
+use App\Security\Roles;
+use App\Storage\Storage;
 
 class UserController
 {
@@ -23,8 +24,7 @@ class UserController
 		$data = Request::body();
 		
 		Validator::required($data, [
-			'username',
-			'password'
+			'username'
 		]);
 
 		Validator::string($data, 'username');
@@ -40,6 +40,10 @@ class UserController
 			'username' => $data['username']
 		])) {
 			Response::error('Username already exists.');
+		}
+		
+		if(!isset($data['password'])) {
+			$data['password'] = Config::get('default_password');
 		}
 		
 		$data['password'] = AuthController::hashPassword($data['password']);

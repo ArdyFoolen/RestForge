@@ -20,6 +20,8 @@ return [
 	
 	'default_owner_password' => 'secret123',
 	
+	'default_password' => 'P@ssword',
+	
 	'storage_path' => __DIR__ . '/storage',
 	
 	'timezone' => 'UTC',
