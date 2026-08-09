@@ -9,6 +9,7 @@ final class Roles
 	public const OWNER = 'owner';
 	public const ADMIN = 'admin';
 	public const USER = 'user';
+	public const READER = 'reader';
 	public const LOGREADER = 'logreader';
 	public const LOGDELETER = 'logdeleter';
 	
@@ -16,6 +17,7 @@ final class Roles
 		self::OWNER,
 		self::ADMIN,
 		self::USER,
+		self::READER,
 		self::LOGREADER,
 		self::LOGDELETER
 	];

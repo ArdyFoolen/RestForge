@@ -12,7 +12,6 @@ final class Permissions
 	public const USER_READ = 'user.read';
 	public const USER_UPDATE = 'user.update';
 	public const USER_DELETE = 'user.delete';
-	public const USER_PASSWORD_CHANGE = 'user.password.change';
 	public const USER_RESET_PASSWORD = 'user.reset.password';
 
 	public const SESSION_READ = 'session.read';
