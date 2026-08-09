@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.5] - 2026-08-09
+
+### Fixed
+
+* Owner role removed obsolete CHANGE_PASSWORD permission
+
 ## [1.3.4] - 2026-08-09
 
 ### Added
