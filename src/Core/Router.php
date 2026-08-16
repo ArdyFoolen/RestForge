@@ -8,6 +8,8 @@ use App\Controllers\UserController;
 use App\Controllers\SessionController;
 use App\Controllers\DashboardController;
 use App\Controllers\LogController;
+use App\Controllers\ConfigController;
+use App\Controllers\CronJobController;
 use App\Security\AuthMiddleware;
 use App\Security\Permissions;
 use App\Security\Restrictions;
@@ -114,10 +116,15 @@ final class Router
 		$sessionController = new SessionController();
 		$dashboardController = new DashboardController();
 		$logController = new LogController();
+		$configController = new ConfigController();
+		$cronJobController = new CronJobController();
 
 		$router->post('/login', [$authController, 'login']);
 		$router->post('/logout', [$authController, 'logout'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
 		$router->post('/refresh', [$authController, 'refresh']);
+
+		$router->get('/config', [$configController, 'list'], [AuthMiddleware::class], [Permissions::CONFIG_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->put('/config', [$configController, 'update'], [AuthMiddleware::class], [Permissions::CONFIG_UPDATE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 
 		$router->post('/item', [$itemController, 'create'], [AuthMiddleware::class], [Permissions::ITEM_CREATE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 		$router->get('/items', [$itemController, 'list'], [AuthMiddleware::class], [Permissions::ITEM_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
@@ -145,6 +152,8 @@ final class Router
 		$router->get('/logs', [$logController, 'list'], [AuthMiddleware::class], [Permissions::SESSION_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 		$router->get('/log/{id}', [$logController, 'read'], [AuthMiddleware::class], [Permissions::SESSION_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 		$router->delete('/log/{id}', [$logController, 'delete'], [AuthMiddleware::class], [Permissions::SESSION_DELETE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+
+		// $router->post('/cron', [$cronJobController, 'create'], [AuthMiddleware::class], [Permissions::CRONJOB_CREATE]);
 	}
 	
 	private function registerRoutes(): void
@@ -228,7 +237,7 @@ final class Router
 			$route['handler'](...array_values($params));
 			return;
 		}
-		
+
 		Response::error('Route not found', 404);
 	}
 }

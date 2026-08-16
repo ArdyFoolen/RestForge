@@ -13,6 +13,9 @@ final class Authorization
 	private const MAP = [
 		Roles::OWNER => [
 			Permissions::AUTHENTICATED,
+			
+			permissions::CONFIG_READ,
+			Permissions::CONFIG_UPDATE,
 
 			Permissions::USER_CREATE,
 			Permissions::USER_READ,
@@ -78,7 +81,13 @@ final class Authorization
 
 			permissions::LOG_READ,
 			permissions::LOG_DELETE
-		]
+		],
+		
+		// Roles::CRONJOB => [
+			// Permissions::AUTHENTICATED,
+
+			// permissions::CRONJOB_CREATE
+		// ]
 	];
 	
 	public static function  restrictionMessage(

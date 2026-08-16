@@ -12,6 +12,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Security\Jwt;
 use App\Security\Roles;
+use App\Security\Restrictions;
 use App\Storage\Storage;
 use DateTimeImmutable;
 
@@ -191,6 +192,7 @@ class AuthController
 				'username' => Config::get('default_owner_username'),
 				'password' => self::hashPassword(Config::get('default_owner_password')),
 				'roles' => [Roles::OWNER],
+				'restrictions' => [Restrictions::USER_PASSWORD_CHANGE_REQUIRED],
 				'enabled' => true
 			];
 			

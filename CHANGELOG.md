@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-08-16
+
+### Added
+
+* Added a config route for listing and updating application secrets that should not be committed to GitHub.
+* The encryption key is excluded from this route and remains managed separately.
+
+### Fixed
+
+* Initial owner add restriction to have it change its password
+
 ## [1.3.5] - 2026-08-09
 
 ### Fixed

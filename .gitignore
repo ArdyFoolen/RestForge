@@ -13,3 +13,6 @@ storage/Items/*.json
 
 storage/Sessions/*.json
 !storage/Sessions/.gitkeep
+
+storage/Config/*.json
+!storage/Config/.gitkeep

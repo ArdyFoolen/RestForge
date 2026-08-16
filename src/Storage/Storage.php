@@ -232,6 +232,13 @@ class Storage
 			));
 	}
 
+	public static function hasRecords(string $collection): bool
+	{
+		$path = self::collectionPath($collection);
+
+		return glob($path . DIRECTORY_SEPARATOR . '*.json') !== [];
+	}
+
 	private static function matchesFilter(
 		array $record,
 		array $filters

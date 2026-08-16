@@ -8,6 +8,9 @@ final class Permissions
 {
 	public const AUTHENTICATED = 'authenticated';
 
+	public const CONFIG_READ = 'config.read';
+	public const CONFIG_UPDATE = 'config.update';
+
 	public const USER_CREATE = 'user.create';
 	public const USER_READ = 'user.read';
 	public const USER_UPDATE = 'user.update';
@@ -25,4 +28,6 @@ final class Permissions
 
 	public const LOG_READ = 'log.read';
 	public const LOG_DELETE = 'log.delete';
+
+	// public const CRONJOB_CREATE = 'cronjob.create';
 }

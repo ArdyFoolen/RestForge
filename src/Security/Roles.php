@@ -12,6 +12,7 @@ final class Roles
 	public const READER = 'reader';
 	public const LOGREADER = 'logreader';
 	public const LOGDELETER = 'logdeleter';
+	// public const CRONJOB = 'cronjob';
 	
 	public const VALID = [
 		self::OWNER,
@@ -20,5 +21,6 @@ final class Roles
 		self::READER,
 		self::LOGREADER,
 		self::LOGDELETER
+		// self::CRONJOB
 	];
 }

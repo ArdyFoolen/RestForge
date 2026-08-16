@@ -291,10 +291,18 @@ Storage/
 Current version:
 
 ```
-v1.3.5
+v1.4.0
 ```
 
 ---
+
+## What's New in 1.4.0
+
+# Secure Configuration Management
+
+- Version 1.4.0 introduces a new configuration route for managing application secrets that should not be stored in or exposed through GitHub.
+- You can now list and update application secrets through the config route, making it easier to manage sensitive values outside of your source code.
+- The encryption key remains excluded from this configuration route and continues to be managed separately for additional security.
 
 ## What's New in v1.3.0
 

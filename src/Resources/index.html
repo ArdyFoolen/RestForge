@@ -196,6 +196,74 @@ When access is blocked, the API returns:
 
 <section>
 
+<h2>Configuration</h2>
+
+<p>
+During initial application setup, the framework automatically generates the
+<code>jwt_secret</code> and <code>app_secret</code> values. These secrets are
+stored in the application's configuration storage and should not be committed
+to GitHub or included directly in source control.
+</p>
+
+<h3>List Configuration</h3>
+
+<pre>GET /config
+
+Authorization: Bearer &lt;jwt-token&gt;</pre>
+
+<p>
+Returns the application secrets currently stored in the configuration.
+Sensitive values should only be accessible to authorized users.
+</p>
+
+<pre>{
+    "success": true,
+    "data": {
+        "jwt_secret": "&lt;jwt-secret&gt;",
+        "app_secret": "&lt;app-secret&gt;"
+    }
+}</pre>
+
+<h3>Update Configuration</h3>
+
+<pre>PUT /config
+
+Authorization: Bearer &lt;jwt-token&gt;
+
+{
+    "jwt_secret": "&lt;new-jwt-secret&gt;",
+    "app_secret": "&lt;new-app-secret&gt;"
+}</pre>
+
+<p>
+Updates the application secrets stored by the framework.
+</p>
+
+<p>
+The encryption key is <strong>not</strong> exposed or managed through these
+endpoints. It remains separately configured and should be kept outside of
+source control.
+</p>
+
+<h3>Generating Secrets</h3>
+
+<p>
+Secrets should be generated using a cryptographically secure random source.
+For PHP, <code>random_bytes()</code> can be used to generate the secret,
+with <code>bin2hex()</code> used when a hexadecimal string is required.
+</p>
+
+<pre>$secret = bin2hex(random_bytes(32));</pre>
+
+<p>
+This generates a 256-bit random value represented as a 64-character
+hexadecimal string.
+</p>
+
+</section>
+
+<section>
+
 <h2>Users</h2>
 
 <ul>
@@ -467,7 +535,7 @@ operation (for example <code>200 OK</code>, <code>201 Created</code> or
 
 REST Framework
 
-Version 1.3.5
+Version 1.4.0
 
 </footer>
 

@@ -2,18 +2,6 @@
 
 declare(strict_types=1);
 
-// header("Cache-Control: no-cache, no-store, must-revalidate");
-// header("Pragma: no-cache");
-// header("Expires: 0");
-
-// Uncomment to replace InternalServer Error with real errors
-// ini_set('log_errors', '1');
-// ini_set('error_log', __DIR__ . '/php-error.log');
-
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
-
 use App\Core\Bootstrap;
 use App\Core\Config;
 use App\Core\Router;
