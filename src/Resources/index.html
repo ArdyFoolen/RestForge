@@ -337,6 +337,7 @@ synchronized from an external iCalendar feed, such as an Airbnb calendar.
 <pre>GET /api/v1/calendar/export.ics?token={token}</pre>
 
 <p>
+Only `Direct` source calendar events are exported.
 The <code>{token}</code> value must be the
 <code>calendar_export_token</code> from the application configuration.
 </p>
@@ -591,7 +592,7 @@ operation (for example <code>200 OK</code>, <code>201 Created</code> or
 
 REST Framework
 
-Version 1.5.0
+Version 1.5.1
 
 </footer>
 

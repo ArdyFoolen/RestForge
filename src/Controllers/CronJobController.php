@@ -65,12 +65,12 @@ class CronJobController
 			);
 		}
 
-		$tenants = $this->get_current_tenants();
+		$tenants = $this->get_current_tenants(self::SOURCE_DIRECT);
 		
 		Response::ics($this->generate_icalendar($tenants));
 	}
 
-	private function get_current_tenants(): array
+	private function get_current_tenants(?string $source = null): array
 	{
 		$filters = [
 				'typeid' => 'Tenant',
@@ -79,6 +79,10 @@ class CronJobController
 				]
 		];
 
+		if ($source !== null) {
+			$filters['source'] = $source;
+		}
+	
 		return Storage::list(
 			ItemController::COLLECTION,
 			$filters,
