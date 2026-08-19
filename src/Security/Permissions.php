@@ -29,5 +29,5 @@ final class Permissions
 	public const LOG_READ = 'log.read';
 	public const LOG_DELETE = 'log.delete';
 
-	// public const CRONJOB_CREATE = 'cronjob.create';
+	public const CRONJOB_CREATE = 'cronjob.create';
 }

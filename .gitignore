@@ -1,6 +1,8 @@
 #Net beans
 nbproject/
 
+storage/*.lock
+
 #Local Test data
 storage/Logs/*.json
 !storage/Logs/.gitkeep

@@ -199,15 +199,21 @@ When access is blocked, the API returns:
 <h2>Configuration</h2>
 
 <p>
+The application uses a single configuration record. Only one configuration
+can exist at a time. The configuration can be retrieved with
+<code>GET</code> and updated with <code>PUT</code>.
+</p>
+
+<p>
 During initial application setup, the framework automatically generates the
-<code>jwt_secret</code> and <code>app_secret</code> values. These secrets are
-stored in the application's configuration storage and should not be committed
+<code>jwt_secret</code>, <code>app_secret</code> and <code>calendar_export_token</code> values.
+These secrets are stored in the application's configuration storage and should not be committed
 to GitHub or included directly in source control.
 </p>
 
-<h3>List Configuration</h3>
+<h3>Get Configuration</h3>
 
-<pre>GET /config
+<pre>GET /api/v1/config
 
 Authorization: Bearer &lt;jwt-token&gt;</pre>
 
@@ -220,19 +226,22 @@ Sensitive values should only be accessible to authorized users.
     "success": true,
     "data": {
         "jwt_secret": "&lt;jwt-secret&gt;",
-        "app_secret": "&lt;app-secret&gt;"
+        "app_secret": "&lt;app-secret&gt;",
+		"calendar_export_token": "&lt;calendar_export_token&gt;"
     }
 }</pre>
 
 <h3>Update Configuration</h3>
 
-<pre>PUT /config
+<pre>PUT /api/v1/config
 
 Authorization: Bearer &lt;jwt-token&gt;
 
 {
     "jwt_secret": "&lt;new-jwt-secret&gt;",
-    "app_secret": "&lt;new-app-secret&gt;"
+    "app_secret": "&lt;new-app-secret&gt;",
+	"calendar_export_token": "&lt;calendar_export_token&gt;",
+	"airbnb_ical_url": "&lt;airbnb_ical_url&gt;"
 }</pre>
 
 <p>
@@ -300,14 +309,60 @@ its own rotating refresh token chain and can be revoked independently.
 <h2>Items</h2>
 
 <ul>
-<li><code>GET /api/items</code></li>
-<li><code>GET /api/item/{id}</code></li>
-<li><code>POST /api/item</code></li>
-<li><code>PUT /api/item/{id}</code></li>
-<li><code>DELETE /api/item/{id}</code></li>
+<li><code>GET /api/v1/items</code></li>
+<li><code>GET /api/v1/item/{id}</code></li>
+<li><code>POST /api/v1/item</code></li>
+<li><code>PUT /api/v1/item/{id}</code></li>
+<li><code>DELETE /api/v1/item/{id}</code></li>
 </ul>
 
 </section>
+
+<section>
+
+<h2>Calendar</h2>
+
+<ul>
+<li><code>GET /api/v1/calendar/export.ics?token={token}</code></li>
+<li><code>POST /api/v1/airbnb-sync/</code></li>
+</ul>
+
+<p>
+Calendar events can be exported in the iCalendar <code>.ics</code> format and
+synchronized from an external iCalendar feed, such as an Airbnb calendar.
+</p>
+
+<h3>Export Calendar</h3>
+
+<pre>GET /api/v1/calendar/export.ics?token={token}</pre>
+
+<p>
+The <code>{token}</code> value must be the
+<code>calendar_export_token</code> from the application configuration.
+</p>
+
+<p>
+Exports calendar events as an iCalendar <code>.ics</code> file in iCalendar
+version 2.0 format.
+</p>
+
+<h3>Sync Airbnb Calendar</h3>
+
+<pre>POST /api/v1/airbnb-sync/</pre>
+
+<p>
+Synchronizes calendar events using the configured
+<code>airbnb_ical_url</code>.
+</p>
+
+<p>
+The endpoint requires an authenticated user with the
+<code>cronjob</code> role.
+</p>
+
+</section>
+
+<section>
 
 <h2>Logs</h2>
 
@@ -492,6 +547,7 @@ Using <code>Z</code> avoids URL encoding issues with timezone offsets such as <c
 
 <tr><td>200</td><td>OK</td></tr>
 <tr><td>201</td><td>Created</td></tr>
+<tr><td>204</td><td>No content</td></tr>
 <tr><td>400</td><td>Bad Request</td></tr>
 <tr><td>401</td><td>Unauthorized</td></tr>
 <tr><td>403</td><td>Forbidden</td></tr>
@@ -535,7 +591,7 @@ operation (for example <code>200 OK</code>, <code>201 Created</code> or
 
 REST Framework
 
-Version 1.4.0
+Version 1.5.0
 
 </footer>
 

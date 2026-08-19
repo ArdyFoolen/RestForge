@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2026-08-19
+
+### Added
+
+* Added a route to export calendar events in .ics format.
+* Added a route to sync Airbnb calendar events from an .ics feed.
+
 ## [1.4.0] - 2026-08-16
 
 ### Added

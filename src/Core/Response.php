@@ -41,6 +41,19 @@ class Response
 		
 		exit;
 	}
+
+	public static function ics(string $ics): never
+	{
+		http_response_code(200);
+
+		header('Content-Type: text/calendar; charset=utf-8');
+		header('Cache-Control: no-cache, no-store, must-revalidate');
+		header('Pragma: no-cache');
+
+		echo $ics;
+		
+		exit;
+	}
 	
 	public static function file(
 		string $path,

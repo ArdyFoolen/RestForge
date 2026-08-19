@@ -83,11 +83,11 @@ final class Authorization
 			permissions::LOG_DELETE
 		],
 		
-		// Roles::CRONJOB => [
-			// Permissions::AUTHENTICATED,
+		Roles::CRONJOB => [
+			Permissions::AUTHENTICATED,
 
-			// permissions::CRONJOB_CREATE
-		// ]
+			permissions::CRONJOB_CREATE
+		]
 	];
 	
 	public static function  restrictionMessage(

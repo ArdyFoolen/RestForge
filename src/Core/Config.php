@@ -46,7 +46,8 @@ final class Config
                 ConfigController::COLLECTION,
                 [
                     'jwt_secret' => bin2hex(random_bytes(32)),
-                    'app_secret' => bin2hex(random_bytes(32))
+                    'app_secret' => bin2hex(random_bytes(32)),
+					'calendar_export_token' => bin2hex(random_bytes(16))
                 ]
             );
         }

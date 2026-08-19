@@ -233,10 +233,14 @@ class Storage
 	}
 
 	public static function hasRecords(string $collection): bool
-	{
+		{
 		$path = self::collectionPath($collection);
 
-		return glob($path . DIRECTORY_SEPARATOR . '*.json') !== [];
+		if (!is_dir($path)) {
+			return false;
+		}
+
+		return count(glob($path . DIRECTORY_SEPARATOR . '*.json')) > 0;
 	}
 
 	private static function matchesFilter(

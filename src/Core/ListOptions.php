@@ -16,7 +16,7 @@ class ListOptions
 		$filters = [];
 
 		foreach (Request::query() as $key => $value) {
-
+			
 			if (in_array(strtolower($key), self::RESERVED_QUERY_PARAMETERS, true)) {
 				continue;
 			}

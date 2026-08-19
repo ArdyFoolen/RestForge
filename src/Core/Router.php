@@ -153,7 +153,8 @@ final class Router
 		$router->get('/log/{id}', [$logController, 'read'], [AuthMiddleware::class], [Permissions::SESSION_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 		$router->delete('/log/{id}', [$logController, 'delete'], [AuthMiddleware::class], [Permissions::SESSION_DELETE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 
-		// $router->post('/cron', [$cronJobController, 'create'], [AuthMiddleware::class], [Permissions::CRONJOB_CREATE]);
+		$router->post('/airbnb-sync', [$cronJobController, 'airbnb_sync'], [AuthMiddleware::class], [Permissions::CRONJOB_CREATE]);
+		$router->get('/calendar/export.ics', [$cronJobController, 'get_calendar']);
 	}
 	
 	private function registerRoutes(): void
