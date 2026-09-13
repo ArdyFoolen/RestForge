@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.2] - 2026-09-13
+
+### Added
+
+* Added session id to whoami.
+
 ## [1.5.1] - 2026-08-19
 
 ### Changed

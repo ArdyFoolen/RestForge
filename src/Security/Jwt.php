@@ -189,6 +189,7 @@ class Jwt
 			Response::error('Invalid token', 401);
 		}
 		
+		$user['sessionid'] = $decoded['sid'] ?? null;
 		self::$principal = $user;
 		
 		return self::$principal;
