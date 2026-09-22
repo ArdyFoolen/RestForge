@@ -12,6 +12,7 @@ class Storage
 		'contains',
 		'startswith',
 		'endswith',
+		'not',
 		'ge',
 		'gt',
 		'le',
@@ -282,7 +283,7 @@ class Storage
 			}
 
 			if (is_array($filter)) {
-				
+
 				// Operator synctax
 				if (self::isOperatorArray($filter)) {
 

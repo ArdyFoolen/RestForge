@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.4] - 2026-09-26
+
+### Changed
+
+* Fixed not was not included as operator for matching.
+
 ## [1.5.3] - 2026-09-26
 
 ### Changed
