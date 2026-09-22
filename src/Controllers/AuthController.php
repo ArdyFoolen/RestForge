@@ -216,10 +216,10 @@ class AuthController
 		$now = new DateTimeImmutable();
 		$absoluteExpiresAt = $now
 			->modify(Config::get('refresh_absolute_expiration'))
-			->format('Y-m-d H:i:s');
+			->format('c');
 		$expiresAt = $now
 			->modify(Config::get('refresh_expiration'))
-			->format('Y-m-d H:i:s');
+			->format('c');
 	
 		$refreshTokenHash = hash_hmac(
 			'sha256',

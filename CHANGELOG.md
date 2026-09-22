@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.3] - 2026-09-26
+
+### Changed
+
+* Fixed seesion dates to be ISO 8601 format.
+
 ## [1.5.2] - 2026-09-13
 
 ### Added
