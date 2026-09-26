@@ -133,7 +133,7 @@ class AuthController
 		$now = new DateTimeImmutable();
 		$expiresAt = $now
 			->modify(Config::get('refresh_expiration'))
-			->format('Y-m-d H:i:s');
+			->format('c');
 
 		$newToken = [
 			'token_hash' => $newRefreshTokenHash,
