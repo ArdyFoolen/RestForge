@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.6] - 2026-09-29
+
+### Added
+
+* Added route /config/mobile to retrieve config settings for the mobile app.
+
 ## [1.5.5] - 2026-09-26
 
 ### Changed

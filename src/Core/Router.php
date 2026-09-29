@@ -125,6 +125,7 @@ final class Router
 
 		$router->get('/config', [$configController, 'list'], [AuthMiddleware::class], [Permissions::CONFIG_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 		$router->put('/config', [$configController, 'update'], [AuthMiddleware::class], [Permissions::CONFIG_UPDATE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
+		$router->get('/config/mobile', [$configController, 'mobile']);
 
 		$router->post('/item', [$itemController, 'create'], [AuthMiddleware::class], [Permissions::ITEM_CREATE], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);
 		$router->get('/items', [$itemController, 'list'], [AuthMiddleware::class], [Permissions::ITEM_READ], [Restrictions::USER_PASSWORD_CHANGE_REQUIRED]);

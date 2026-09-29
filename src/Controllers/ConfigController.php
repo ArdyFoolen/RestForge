@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Core\Request;
 use App\Core\Response;
 use App\Storage\Storage;
+use App\Security\Roles;
 
 class ConfigController
 {
@@ -42,5 +43,11 @@ class ConfigController
 		
 		Response::success([], 204);
 	}
-}
 
+	public function mobile(): void
+	{
+		Response::success([
+			'AvailableRoles' => Roles::VALID
+		]);
+	}
+}

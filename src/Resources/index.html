@@ -231,6 +231,29 @@ Sensitive values should only be accessible to authorized users.
     }
 }</pre>
 
+<h3>Get Mobile Configuration</h3>
+
+<pre>GET /api/v1/config/mobile</pre>
+
+<p>
+Returns the configuration settings for the mobile app.
+</p>
+
+<pre>{
+    "success": true,
+    "data": {
+        "AvailableRoles": [
+            "owner",
+            "admin",
+            "user",
+            "reader",
+            "logreader",
+            "logdeleter",
+            "cronjob"
+        ]
+    }
+}</pre>
+
 <h3>Update Configuration</h3>
 
 <pre>PUT /api/v1/config
@@ -592,7 +615,7 @@ operation (for example <code>200 OK</code>, <code>201 Created</code> or
 
 REST Framework
 
-Version 1.5.5
+Version 1.5.6
 
 </footer>
 
