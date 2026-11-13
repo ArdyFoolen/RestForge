@@ -36,6 +36,7 @@ A lightweight REST API framework written in PHP that provides authentication, au
 - Refresh token reuse detection
 - iCalendar (.ics) calendar export
 - Airbnb iCalendar calendar synchronization
+- Mobile App update
 
 ---
 
@@ -124,10 +125,12 @@ Current roles:
 - logreader
 - logdeleter
 - cronjob
+- developer
 
 Permissions are assigned to roles and checked through middleware.
 
 The `cronjob` role is used by scheduled or automated operations such as Airbnb calendar synchronization.
+The `developer` role is used to upload a new version of the mobile app APK file.
 
 ---
 
@@ -365,6 +368,7 @@ Descending:
 - Calendar Export
 - Airbnb Calendar Sync
 - Version
+- Mobile
 
 ---
 
@@ -390,6 +394,7 @@ Storage/
 	Sessions/
     Items/
     Logs/
+	MobileApp/
 ```
 
 ---
@@ -399,10 +404,17 @@ Storage/
 Current version:
 
 ```
-v1.5.6
+v1.6.0
 ```
 
 ---
+
+## What's New in 1.6.0
+
+- Added upload/download apk files to router
+- Added mobile app version and build to config settings
+- Added developer role with mobileapp.upload permissions
+- Return MobileAppVersion, MobileAppBuild en ApkFileSize from mobile config and config
 
 ## What's New in 1.5.0
 

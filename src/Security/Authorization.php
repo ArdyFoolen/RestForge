@@ -87,6 +87,12 @@ final class Authorization
 			Permissions::AUTHENTICATED,
 
 			permissions::CRONJOB_CREATE
+		],
+		
+		Roles::DEVELOPER => [
+			Permissions::AUTHENTICATED,
+
+			permissions::MOBILEAPP_UPLOAD
 		]
 	];
 	

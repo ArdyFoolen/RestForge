@@ -10,6 +10,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\LogController;
 use App\Controllers\ConfigController;
 use App\Controllers\CronJobController;
+use App\Controllers\MobileAppController;
 use App\Security\AuthMiddleware;
 use App\Security\Permissions;
 use App\Security\Restrictions;
@@ -118,6 +119,7 @@ final class Router
 		$logController = new LogController();
 		$configController = new ConfigController();
 		$cronJobController = new CronJobController();
+		$mobileAppController = new MobileAppController();
 
 		$router->post('/login', [$authController, 'login']);
 		$router->post('/logout', [$authController, 'logout'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
@@ -156,6 +158,9 @@ final class Router
 
 		$router->post('/airbnb-sync', [$cronJobController, 'airbnb_sync'], [AuthMiddleware::class], [Permissions::CRONJOB_CREATE]);
 		$router->get('/calendar/export.ics', [$cronJobController, 'get_calendar']);
+
+		$router->get('/mobile', [$mobileAppController, 'download'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
+		$router->post('/mobile', [$mobileAppController, 'upload'], [AuthMiddleware::class], [Permissions::MOBILEAPP_UPLOAD]);
 	}
 	
 	private function registerRoutes(): void

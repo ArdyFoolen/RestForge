@@ -46,7 +46,13 @@ class ConfigController
 
 	public function mobile(): void
 	{
+		$records = Storage::list(
+			self::COLLECTION);
+
 		Response::success([
+			'MobileAppVersion' => $records[0]['MobileAppVersion'] ?? '1.0.0',
+			'MobileAppBuild' => $records[0]['MobileAppBuild'] ?? 1,
+			'ApkFileSize' => $records[0]['ApkFileSize'] ?? 0,
 			'AvailableRoles' => Roles::VALID
 		]);
 	}

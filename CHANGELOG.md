@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0] - 2026-11-13
+
+### Added
+
+* Added route /mobile to upload/download mobile app APK file.
+* Added mobileapp.upload permission and developer role.
+* Return MobileAppVersion, MobileAppBuild and ApkFileSize from mobile and normal config request.
+
 ## [1.5.6] - 2026-09-29
 
 ### Added
