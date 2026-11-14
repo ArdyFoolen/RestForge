@@ -9,6 +9,10 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+# Block internal folders and files from direct URL access
+RewriteRule ^(Storage|src|nbproject|\.git)(/|$) - [NC,F,L]
+RewriteRule ^(Config\.php|info\.php|GitCommands\.txt|CHANGELOG\.md|README\.md|\.gitignore)$ - [NC,F,L]
+
 # Send non-existing files/folders to index.php
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d

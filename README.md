@@ -37,6 +37,8 @@ A lightweight REST API framework written in PHP that provides authentication, au
 - iCalendar (.ics) calendar export
 - Airbnb iCalendar calendar synchronization
 - Mobile App update
+- Mobile App download page (`DownloadApk.html`)
+- Login throttling (brute-force protection)
 
 ---
 
@@ -111,6 +113,22 @@ Terminate a session using:
 ```http
 POST /api/v1/logout
 ```
+
+## Login Throttling
+
+Failed logins are throttled per username and per IP address:
+
+| Scope    | Failures before lock |
+|----------|----------------------|
+| Username | 5                    |
+| IP       | 20                   |
+
+- The first lock lasts 60 seconds and doubles with every additional failure, up to 1 hour.
+- Failures are counted for 24 hours without a failed attempt in between.
+- A locked request returns `429 Too Many Requests` with a `Retry-After` header.
+- A successful login clears the username counter.
+- Unknown usernames take the same time to reject as known ones.
+- Counters are stored encrypted in `Storage/throttle`.
 
 ---
 
@@ -232,12 +250,23 @@ Example:
 }
 ```
 
-
 The `PUT` request updates the existing configuration record. A second configuration record cannot be created.
 
 Sensitive configuration values should not be committed to source control.
 
 The encryption key is not exposed or managed through these endpoints. It remains separately configured and should be kept outside of source control.
+
+---
+
+# Mobile App Download Page
+
+`DownloadApk.html` lets a new user download the mobile app from a link sent by email.
+The page signs in with `POST /api/v1/login` and then downloads the APK with
+`GET /api/v1/mobile` using the returned bearer token. Users who still have to
+change their password can download the app and change it after signing in to
+the app.
+
+Place the logo at `src/Resources/assets/restforge_logo.png`.
 
 ---
 
@@ -377,24 +406,26 @@ Descending:
 ```
 public/
 
-resources/
-    index.html
-
 src/
     Controllers/
     Middleware/
+	Resources/
+		index.html
+		assets/
+			restforge_logo.png
     Routing/
     Security/
     Storage/
     Validation/
 
 Storage/
-	Config/
-    Users/
-	Sessions/
-    Items/
-    Logs/
+	config/
+    users/
+	sessions/
+    items/
+    logs/
 	MobileApp/
+    throttle/
 ```
 
 ---
@@ -404,22 +435,32 @@ Storage/
 Current version:
 
 ```
-v1.6.0
+v1.7.0
 ```
 
 ---
+
+## What's New in 1.7.0
+
+- Added `DownloadApk.html`, a browser page to sign in and download the mobile app APK
+- Added login throttling with per-username and per-IP lockouts and exponential backoff
+- Added `429 Too Many Requests` with a `Retry-After` header
+- Unknown usernames are now rejected in the same time as known ones
+- Dashboard sizes now include the `MobileApp`, `throttle` and `Config` folders
+- `.htaccess` blocks direct access to `Storage`, `src` and internal project files
 
 ## What's New in 1.6.0
 
 - Added upload/download apk files to router
 - Added mobile app version and build to config settings
 - Added developer role with mobileapp.upload permissions
-- Return MobileAppVersion, MobileAppBuild en ApkFileSize from mobile config and config
+- Return DownloadApkeAppVersion, MobileAppBuild and ApkFileSize from mobile config and config
 
 ## What's New in 1.5.0
 
 - Added iCalendar (`.ics`) calendar export
 - Added Airbnb iCalendar synchronization
+
 - Added `calendar_export_token` configuration
 - Added `airbnb_ical_url` configuration
 - Added `cronjob` role for automated calendar synchronization

@@ -21,3 +21,6 @@ storage/Config/*.json
 
 storage/MobileApp/*.apk
 !storage/MobileApp/.gitkeep
+
+storage/Throttle/*.json
+!storage/Throttle/.gitkeep

@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0] - 2026-11-14
+
+### Added
+
+* Added DownloadApk.html, a page to sign in and download the mobile app APK from an emailed link.
+* Added login throttling per username and per IP address with exponentially increasing lock times.
+* Added 429 Too Many Requests response with a Retry-After header for locked logins.
+* Added the throttle storage collection for login attempt counters.
+
+### Changed
+
+* Login now verifies a dummy hash for unknown users so responses take the same time as for known users.
+* Dashboard sizes now include the MobileApp, throttle and Config storage folders.
+
+### Fixed
+
+* Blocked direct URL access to the Storage and src folders and other internal files through .htaccess.
+
 ## [1.6.0] - 2026-11-13
 
 ### Added

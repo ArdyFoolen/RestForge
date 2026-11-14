@@ -105,6 +105,20 @@ A lightweight REST framework backed by an encrypted JSON document database.
 Returns a short-lived JWT access token and a rotating refresh token.
 </p>
 
+<p>
+Failed logins are throttled per username and per IP address. After 5 failed
+attempts for a username (or 20 from one IP address) further attempts are
+rejected with <code>429 Too Many Requests</code> and a
+<code>Retry-After</code> header containing the number of seconds to wait. The
+lock time doubles with every additional failure, up to 1 hour, and a failed
+attempt counter is reset by a successful login.
+</p>
+
+<pre>{
+    "success": false,
+    "error": "Too many attempts. Try again later."
+}</pre>
+
 <h3>Refresh Token</h3>
 
 <pre>POST /refresh
@@ -577,6 +591,7 @@ Using <code>Z</code> avoids URL encoding issues with timezone offsets such as <c
 <tr><td>403</td><td>Forbidden</td></tr>
 <tr><td>404</td><td>Not Found</td></tr>
 <tr><td>409</td><td>Conflict</td></tr>
+<tr><td>429</td><td>Too Many Requests</td></tr>
 <tr><td>500</td><td>Internal Server Error</td></tr>
 
 </table>
@@ -615,7 +630,7 @@ operation (for example <code>200 OK</code>, <code>201 Created</code> or
 
 REST Framework
 
-Version 1.6.0
+Version 1.7.0
 
 </footer>
 

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RestForge – Sign in</title>
+<style>
+  body{font-family:Arial,sans-serif;background:#fafafa;display:flex;justify-content:center;padding:40px 16px}
+  main{width:100%;max-width:360px;text-align:center}
+  img{max-width:180px;margin-bottom:24px}
+  input,button{width:100%;box-sizing:border-box;padding:12px;margin:6px 0;font-size:16px}
+  button{background:#222;color:#fff;border:0;border-radius:6px}
+  #msg{min-height:1.4em;color:#b00020}
+</style>
+</head>
+<body>
+<main>
+  <img src="assets/restforge_logo.png" alt="Logo">
+  <form id="f">
+    <input id="u" placeholder="Username" autocomplete="username" required>
+    <input id="p" type="password" placeholder="Password" autocomplete="current-password" required>
+    <button id="b">Sign in &amp; download</button>
+  </form>
+  <p id="msg"></p>
+</main>
+<script>
+const api = location.pathname.replace(/[^/]*$/, '') + 'api/v1';
+const msg = document.getElementById('msg');
+const btn = document.getElementById('b');
+
+async function apiError(res, fallback) {
+  try { return (await res.json()).error || fallback; } catch { return fallback; }
+}
+
+document.getElementById('f').addEventListener('submit', async e => {
+  e.preventDefault();
+  msg.style.color = '#b00020'; msg.textContent = ''; btn.disabled = true;
+  let auth = null;
+  try {
+    // 1. Login -> bearer token
+    const r = await fetch(api + '/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username: u.value.trim(), password: p.value})
+    });
+    if (!r.ok) throw new Error(await apiError(r, 'Login failed'));
+    auth = {Authorization: 'Bearer ' + (await r.json()).data.token};
+    p.value = '';
+
+    // 2. Download the APK with the token
+    const res = await fetch(api + '/mobile', {headers: auth});
+    if (!res.ok) throw new Error(await apiError(res, 'Download failed'));
+
+    const total = +res.headers.get('Content-Length') || 0;
+    const reader = res.body.getReader();
+    const chunks = []; let got = 0;
+    msg.style.color = '#333';
+    for (;;) {
+      const {done, value} = await reader.read();
+      if (done) break;
+      chunks.push(value); got += value.length;
+      if (total) msg.textContent = 'Downloading… ' + Math.round(got / total * 100) + '%';
+    }
+
+    // 3. Hand the file to the browser
+    const blob = new Blob(chunks, {type: 'application/vnd.android.package-archive'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'RestForgeMobile.apk';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+    msg.textContent = 'Done. Open the APK to install, then sign in and set a new password.';
+  } catch (err) {
+    msg.style.color = '#b00020'; msg.textContent = err.message;
+  } finally {
+    btn.disabled = false;
+    if (auth) fetch(api + '/logout', {method: 'POST', headers: auth}); // drop the web session
+  }
+});
+</script>
+</body>
+</html>

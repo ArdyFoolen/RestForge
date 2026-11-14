@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Controllers\Validator;
 use App\Controllers\UserController;
 use App\Controllers\SessionController;
+use App\Security\LoginThrottle;
 use App\Core\Config;
 use App\Core\Request;
 use App\Core\Response;
@@ -18,6 +19,8 @@ use DateTimeImmutable;
 
 class AuthController
 {
+	private const DUMMY_HASH = '$2y$10$zJs1rykJ8pe31xD32ALrqemXI/ePgTWsyhaHQNYl/UmkVY6rj90W6';
+	
 	public function login(): void
 	{
 		$data = Request::body();
@@ -33,6 +36,8 @@ class AuthController
 		$username = trim($data['username']?? '');
 		$password = trim($data['password'] ?? '');
 		
+		LoginThrottle::assertAllowed($username);
+		
 		Jwt::clearCache();
 
 		$this->setupOwner();
@@ -41,9 +46,13 @@ class AuthController
 			'username' => $username
 		]);
 		
-		if ($user === null || !$user['enabled'] || !self::verifyPassword($password, $user['password'])) {
-				Response::error('Invalid username or password.', 401);
+		$passwordOk = self::verifyPassword($password, $user['password'] ?? self::DUMMY_HASH);
+		if ($user === null || !$user['enabled'] || !$passwordOk) {
+			LoginThrottle::recordFailure($username);
+			Response::error('Invalid username or password.', 401);
 		}
+		
+		LoginThrottle::recordSuccess($username);
 		
 		$refreshToken = bin2hex(random_bytes(64));
 		$sessionId = $this->setupSession($user['id'], $refreshToken);

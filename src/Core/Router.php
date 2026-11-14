@@ -184,6 +184,18 @@ final class Router
 				'text/html'
 			);
 		});
+		$this->get('download', function() {
+			Response::file(
+				__DIR__ . '/../Resources/DownloadApk.html',
+				'text/html'
+			);
+		});
+		$this->get('assets/restforge_logo.png', function() {
+			Response::file(
+				__DIR__ . '/../Resources/assets/restforge_logo.png',
+				'image/apng'
+			);
+		});
 	}
 	
 	private function dispatchRequest(): void
