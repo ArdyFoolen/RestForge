@@ -37,7 +37,7 @@ A lightweight REST API framework written in PHP that provides authentication, au
 - iCalendar (.ics) calendar export
 - Airbnb iCalendar calendar synchronization
 - Mobile App update
-- Mobile App download page (`DownloadApk.html`)
+- Mobile App download page (`/download`)
 - Login throttling (brute-force protection)
 
 ---
@@ -260,13 +260,15 @@ The encryption key is not exposed or managed through these endpoints. It remains
 
 # Mobile App Download Page
 
-`DownloadApk.html` lets a new user download the mobile app from a link sent by email.
+`GET /download` serves `DownloadApk.html`, a page that lets a new user download
+the mobile app from a link sent by email (`https://<host>/download`).
+
 The page signs in with `POST /api/v1/login` and then downloads the APK with
 `GET /api/v1/mobile` using the returned bearer token. Users who still have to
 change their password can download the app and change it after signing in to
 the app.
 
-Place the logo at `src/Resources/assets/restforge_logo.png`.
+The page's logo and icons are served from `/assets/...` and `/favicon.ico`.
 
 ---
 
@@ -411,8 +413,11 @@ src/
     Middleware/
 	Resources/
 		index.html
+		DownloadApk.html
 		assets/
 			restforge_logo.png
+			favicon.ico
+			favicon.svg
     Routing/
     Security/
     Storage/
@@ -435,10 +440,16 @@ Storage/
 Current version:
 
 ```
-v1.7.0
+v1.7.1
 ```
 
 ---
+
+## What's New in 1.7.1
+
+- The mobile app download page is now `DownloadApk.html`, served by the router at `/download`
+- Added routes for the download page logo and icons, including `/favicon.ico`
+- Added favicon and app icons to the download page
 
 ## What's New in 1.7.0
 

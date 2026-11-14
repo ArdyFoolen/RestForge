@@ -190,11 +190,19 @@ final class Router
 				'text/html'
 			);
 		});
-		$this->get('assets/restforge_logo.png', function() {
-			Response::file(
-				__DIR__ . '/../Resources/assets/restforge_logo.png',
-				'image/apng'
-			);
+		
+		$this->get('/assets/{file}', function (string $file) {
+			$allowed = [
+				'restforge_logo.png' => 'image/png',
+				'favicon.ico'        => 'image/x-icon',
+				'favicon.svg'        => 'image/svg+xml',
+			];
+
+			if (!isset($allowed[$file])) {
+				Response::error('Not found', 404);
+			}
+
+			Response::file(__DIR__ . '/../Resources/assets/' . $file, $allowed[$file]);
 		});
 	}
 	

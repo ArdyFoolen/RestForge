@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.1] - 2026-11-14
+
+### Added
+
+* Added /download route that serves the mobile app download page (DownloadApk.html).
+* Added routes for the download page logo and icon files, including /favicon.ico.
+* Added favicon and app icon links to the download page.
+
 ## [1.7.0] - 2026-11-14
 
 ### Added
