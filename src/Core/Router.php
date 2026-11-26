@@ -11,6 +11,7 @@ use App\Controllers\LogController;
 use App\Controllers\ConfigController;
 use App\Controllers\CronJobController;
 use App\Controllers\MobileAppController;
+use App\Controllers\ClientLogController;
 use App\Security\AuthMiddleware;
 use App\Security\Permissions;
 use App\Security\Restrictions;
@@ -120,6 +121,7 @@ final class Router
 		$configController = new ConfigController();
 		$cronJobController = new CronJobController();
 		$mobileAppController = new MobileAppController();
+		$clientLogController = new ClientLogController();
 
 		$router->post('/login', [$authController, 'login']);
 		$router->post('/logout', [$authController, 'logout'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
@@ -161,6 +163,8 @@ final class Router
 
 		$router->get('/mobile', [$mobileAppController, 'download'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
 		$router->post('/mobile', [$mobileAppController, 'upload'], [AuthMiddleware::class], [Permissions::MOBILEAPP_UPLOAD]);
+
+		$router->post('/clientlog', [$clientLogController, 'create'], [AuthMiddleware::class], [Permissions::AUTHENTICATED]);
 	}
 	
 	private function registerRoutes(): void

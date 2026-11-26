@@ -239,8 +239,8 @@ Sensitive values should only be accessible to authorized users.
 <pre>{
     "success": true,
     "data": {
-        "jwt_secret": "&lt;jwt-secret&gt;",
-        "app_secret": "&lt;app-secret&gt;",
+		"jwt_secret": "&lt;new-jwt-secret&gt;",
+		"app_secret": "&lt;new-app-secret&gt;",
 		"calendar_export_token": "&lt;calendar_export_token&gt;"
     }
 }</pre>
@@ -278,7 +278,8 @@ Authorization: Bearer &lt;jwt-token&gt;
     "jwt_secret": "&lt;new-jwt-secret&gt;",
     "app_secret": "&lt;new-app-secret&gt;",
 	"calendar_export_token": "&lt;calendar_export_token&gt;",
-	"airbnb_ical_url": "&lt;airbnb_ical_url&gt;"
+	"airbnb_ical_url": "&lt;airbnb_ical_url&gt;",
+	"error_mail_to": "&lt;email-address&gt;"
 }</pre>
 
 <p>
@@ -396,6 +397,42 @@ Synchronizes calendar events using the configured
 <p>
 The endpoint requires an authenticated user with the
 <code>cronjob</code> role.
+</p>
+
+</section>
+
+<section>
+
+<h2>Client Log</h2>
+
+<ul>
+<li><code>POST /api/v1/clientlog</code></li>
+</ul>
+
+<p>
+Receives error logs from the mobile app. Requires an authenticated user.
+</p>
+
+<pre>POST /api/v1/clientlog
+
+Authorization: Bearer &lt;jwt-token&gt;
+
+{
+    "message": "Error message",
+    "stack": "&lt;stack trace&gt;",
+    "context": "TenantViewModel",
+    "app_version": "1.0.0/12"
+}</pre>
+
+<p>
+Only <code>message</code> is required. The log is stored in the logs
+collection with type <code>MobileError</code> and can be read through the
+Logs endpoints.
+</p>
+
+<p>
+When <code>error_mail_to</code> is configured, an email is sent for every
+log received.
 </p>
 
 </section>
@@ -630,7 +667,7 @@ operation (for example <code>200 OK</code>, <code>201 Created</code> or
 
 REST Framework
 
-Version 1.7.1
+Version 1.8.0
 
 </footer>
 

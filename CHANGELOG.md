@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.0] - 2026-11-26
+
+### Added
+
+* Added route POST /clientlog to receive error logs from the mobile app.
+* Client logs are stored in the logs collection with type `MobileError`, including app version, context and stack trace.
+* Added optional `error_mail_to` configuration setting. When set, an email is sent for every client log received.
+* Added `ClientLogController`.
+
+### Changed
+
+* Client log fields are truncated (message 2000, context 200, app version 50, stack 8000 characters).
+
 ## [1.7.1] - 2026-11-14
 
 ### Added

@@ -39,6 +39,7 @@ A lightweight REST API framework written in PHP that provides authentication, au
 - Mobile App update
 - Mobile App download page (`/download`)
 - Login throttling (brute-force protection)
+- Mobile app error logging (local log, optional upload and email)
 
 ---
 
@@ -230,6 +231,8 @@ The `calendar_export_token` is used to authorize calendar export requests and sh
 
 The `airbnb_ical_url` must be manually configured using the iCalendar (`.ics`) feed URL supplied by Airbnb.
 
+The optional `error_mail_to` value is an email address that receives a mail for every client log uploaded by the mobile app. Leave it empty to only store the log.
+
 ## Update Configuration
 
 ```http
@@ -299,6 +302,36 @@ The endpoint synchronizes calendar events using the configured `airbnb_ical_url`
 The `airbnb_ical_url` must contain the iCalendar (`.ics`) feed URL supplied by Airbnb.
 
 The endpoint requires an authenticated user with the `cronjob` role.
+
+---
+
+---
+
+# Client Log
+
+The mobile app can upload errors to the server.
+
+```http
+POST /api/v1/clientlog
+```
+
+```http
+Authorization: Bearer <token>
+```
+
+Example:
+```json
+{
+    "message": "Object reference not set to an instance of an object.",
+    "stack": "<stack trace>",
+    "context": "TenantViewModel",
+    "app_version": "1.0.0/12"
+}
+```
+
+Only `message` is required. The log is stored in the `logs` collection with type `MobileError` and is visible through the Logs endpoints.
+
+If `error_mail_to` is configured, an email is sent for every log received.
 
 ---
 
@@ -440,10 +473,15 @@ Storage/
 Current version:
 
 ```
-v1.7.1
+v1.8.0
 ```
 
 ---
+
+## What's New in 1.8.0
+
+- Added client log route for mobile app errors
+- Added optional `error_mail_to` configuration for email notification
 
 ## What's New in 1.7.1
 
